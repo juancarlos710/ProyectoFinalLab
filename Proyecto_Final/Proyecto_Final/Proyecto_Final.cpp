@@ -34,11 +34,16 @@ GLfloat m_amb1[] = { 0.0, 0.0, 0.0, 1.0 };				// Ambiental Light Values
 GLfloat m_s1[] = {18};
 
 CTexture text1;
-CTexture text2;
-CTexture text3;	//Flecha
+CTexture Suelo_Tierra;
+CTexture Muro_Roca;	//Flecha
 CTexture text4;	//Pavimento
 CTexture text5;	//Pasto01
 CTexture text6;	//Casa01
+
+CFiguras Pared;
+CFiguras Suelo;
+CFiguras Techo;
+
 
 CFiguras fig1;
 CFiguras fig2;
@@ -87,25 +92,13 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	text1.BuildGLTexture();
 	text1.ReleaseImage();
 
-	text2.LoadBMP("logopumas.bmp");
-	text2.BuildGLTexture();
-	text2.ReleaseImage();
+	Suelo_Tierra.LoadTGA("Suelo_Tierra.tga");
+	Suelo_Tierra.BuildGLTexture();
+	Suelo_Tierra.ReleaseImage();
 
-	text3.LoadTGA("city/arrow.tga");
-	text3.BuildGLTexture();
-	text3.ReleaseImage();
-
-	text4.LoadTGA("city/pavimento.tga");
-	text4.BuildGLTexture();
-	text4.ReleaseImage();
-
-	text5.LoadTGA("city/pasto01.tga");
-	text5.BuildGLTexture();
-	text5.ReleaseImage();
-
-	text6.LoadTGA("city/casa01.tga");
-	text6.BuildGLTexture();
-	text6.ReleaseImage();
+	Muro_Roca.LoadTGA("Muro_Roca.tga");
+	Muro_Roca.BuildGLTexture();
+	Muro_Roca.ReleaseImage();
 
 	//Carga de Figuras
 	kit._3dsLoad("kitt.3ds");	
@@ -155,94 +148,86 @@ void display ( void )   // Creamos la funcion donde se dibuja
 				glEnable(GL_LIGHTING);
 			glPopMatrix();
 
-			glPushMatrix();
-				//Para que el coche conserve sus colores
-				glDisable(GL_COLOR_MATERIAL);
-				glRotatef(90, 0, 1, 0);
-				glScalef(0.3, 0.3, 0.3);
-
-				glTranslatef(0, 4, movKit);
-				//Pongo aquí la carroceria del carro
-				kit.GLrender(NULL,_SHADED,1.0);  //_WIRED O _POINTS
-		
-				//llanta.GLrender(NULL,_SHADED,1.0);
-				
-			glPopMatrix();
-
 			//Para que el comando glColor funcione con iluminacion
 			glEnable(GL_COLOR_MATERIAL);
 			
-			glPushMatrix(); //Flecha
-				glScalef(7,0.1,7);
-				glDisable(GL_LIGHTING);
-				fig3.prisma_anun(text3.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+				// Camara de Tortura
+				glPushMatrix();
 
-			glPushMatrix(); //Camino1
-				glTranslatef(23.5,0.0,0.0);
-				glScalef(40,0.1,7);
-				glDisable(GL_LIGHTING);
-				fig3.prisma2(text4.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+					// Suelo de Camara
+					glDisable(GL_LIGHTING);
+					Suelo.prisma(0.25, 10.0, 10.0, Suelo_Tierra.GLindex);
+					glEnable(GL_LIGHTING);
 
-			glPushMatrix(); //Camino2
-				glTranslatef(-23.5,0.0,0.0);
-				glScalef(40,0.1,7);
-				glDisable(GL_LIGHTING);
-				fig3.prisma2(text4.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+					glPushMatrix();
+						// Muro trasero
+						glTranslatef(0.0, 1.375, -4.875);
+						glDisable(GL_LIGHTING);
+						Pared.prisma(2.5, 10.0, 0.25, Muro_Roca.GLindex);
+						glEnable(GL_LIGHTING);
 
-			glPushMatrix(); //Pasto
-				glTranslatef(0.0,0.0,-4.0);
-				glScalef(87,0.1,1);
-				glDisable(GL_LIGHTING);
-				fig4.prisma2(text5.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+					glPopMatrix();
 
-			glPushMatrix(); //Pasto
-				glTranslatef(0.0,0.0,4.0);
-				glScalef(87,0.1,1);
-				glDisable(GL_LIGHTING);
-				fig4.prisma2(text5.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+					glPushMatrix();
+						// Muro derecho
+						glTranslatef(4.875, 1.375, 0.0);
+						glDisable(GL_LIGHTING);
+						Pared.prisma(2.5, 0.25, 9.5, Muro_Roca.GLindex);
+						glEnable(GL_LIGHTING);
 
-			glPushMatrix(); //Casa01
-				glTranslatef(0.0,3.0,7.0);
-				glRotatef(90,1,0,0);
-				glRotatef(180,0,0,1);
-				glScalef(6,5.0,6);
-				glDisable(GL_LIGHTING);
-				fig5.prisma2(text6.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+					glPopMatrix();
 
-			glPushMatrix(); //Casa01
-				glTranslatef(0.0,3.0,-7.0);
-				glRotatef(90,1,0,0);
-				glScalef(6,5.0,6);
-				glDisable(GL_LIGHTING);
-				fig5.prisma2(text6.GLindex, 0);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+					glPushMatrix();
+						// Muro izquierdo
+						glTranslatef(-4.875, 1.375, 0.0);
+						glDisable(GL_LIGHTING);
+						Pared.prisma(2.5, 0.25, 9.5, Muro_Roca.GLindex);
+						glEnable(GL_LIGHTING);
 
-			glColor3f(1.0,1.0,1.0);
+					glPopMatrix();
+
+					glPushMatrix();
+						// Primera parte del Muro de enfrente
+						glTranslatef(-2.875, 1.375, 4.875);
+						glDisable(GL_LIGHTING);
+						Pared.prisma(2.5, 4.25, 0.25, Muro_Roca.GLindex);
+						glEnable(GL_LIGHTING);
+
+					glPopMatrix();
+
+					glPushMatrix();
+						// Segunda parte del Muro de enfrente
+						glTranslatef(2.875, 1.375, 4.875);
+						glDisable(GL_LIGHTING);
+						Pared.prisma(2.5, 4.25, 0.25, Muro_Roca.GLindex);
+						glEnable(GL_LIGHTING);
+
+					glPopMatrix();
+
+					glPushMatrix();
+						// Tercera parte del Muro de enfrente arriba del la puerta
+						glTranslatef(0.0, 2.475, 4.875);
+						glDisable(GL_LIGHTING);
+						Pared.prisma(0.3, 1.5, 0.25, Muro_Roca.GLindex);
+						glEnable(GL_LIGHTING);
+
+					glPopMatrix();
+
+					glTranslatef(-0.75, 1.225, 4.875);
+
+					glPushMatrix();
+
+					glRotatef(45,0,1,0); // giro de la puerta
+
+					glTranslatef(0.75, 0.0, 0.0);
+					fig2.prisma(2.2, 1.5, 0.0, 0);
+
+					glPopMatrix();
+
+				glPopMatrix();
 
 		glPopMatrix();
 	glPopMatrix();
-
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-		glColor3f(1.0,0.0,0.0);
-		pintaTexto(-12,12.0,-14.0,(void *)font,"Practica 10");
-		pintaTexto(-12,10.5,-14,(void *)font,"Poner algo en Movimiento");
-		glColor3f(1.0,1.0,1.0);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
 
 	glutSwapBuffers ( );
 
@@ -363,7 +348,7 @@ int main ( int argc, char** argv )   // Main Function
   glutInitDisplayMode (GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); // Display Mode (Clores RGB y alpha | Buffer Doble )
   glutInitWindowSize  (500, 500);	// Tamaño de la Ventana
   glutInitWindowPosition (0, 0);	//Posicion de la Ventana
-  glutCreateWindow    ("Practica 10"); // Nombre de la Ventana
+  glutCreateWindow    ("Proyecto Final Laboratorio"); // Nombre de la Ventana
   //glutFullScreen     ( );         // Full Screen
   InitGL ();						// Parametros iniciales de la aplicacion
   glutDisplayFunc     ( display );  //Indicamos a Glut función de dibujo
