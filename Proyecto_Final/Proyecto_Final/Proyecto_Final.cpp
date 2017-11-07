@@ -35,15 +35,14 @@ GLfloat m_s1[] = {18};
 
 CTexture text1;
 CTexture Suelo_Tierra;
-CTexture Muro_Roca;	//Flecha
-CTexture text4;	//Pavimento
-CTexture text5;	//Pasto01
+CTexture Muro_Roca;
+CTexture Cadena1;	//Pavimento
+CTexture Cadena2;	//Pasto01
 CTexture text6;	//Casa01
 
 CFiguras Pared;
 CFiguras Suelo;
 CFiguras Techo;
-
 
 CFiguras fig1;
 CFiguras fig2;
@@ -55,6 +54,9 @@ CFiguras fig6;
 CFiguras fig7; //Para el monito
 
 //Figuras de 3D Studio
+
+CModel femur;
+
 CModel kit;
 CModel llanta;
 
@@ -100,7 +102,17 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	Muro_Roca.BuildGLTexture();
 	Muro_Roca.ReleaseImage();
 
+	Cadena1.LoadTGA("cadena1.tga");
+	Cadena1.BuildGLTexture();
+	Cadena1.ReleaseImage();
+
+	Cadena2.LoadTGA("cadena2.tga");
+	Cadena2.BuildGLTexture();
+	Cadena2.ReleaseImage();
+
 	//Carga de Figuras
+	femur._3dsLoad("FEMUR.3ds");
+
 	kit._3dsLoad("kitt.3ds");	
 	//kit.VertexNormals();
 	
@@ -123,6 +135,35 @@ void pintaTexto(float x, float y, float z, void *font,char *string)
   }
 }
 
+void cadena1 ( void ) {
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glDisable(GL_LIGHTING);
+	fig4.prisma(0.2, 0.2, 0, Cadena1.GLindex);
+	glEnable(GL_LIGHTING);
+	glRotatef(90, 0, 1, 0);
+	glDisable(GL_LIGHTING);
+	fig4.prisma(0.2, 0.2, 0, Cadena1.GLindex);
+	glEnable(GL_LIGHTING);
+	glDisable(GL_ALPHA_TEST);
+
+}
+
+void cadena2(void) {
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glDisable(GL_LIGHTING);
+	fig4.prisma(0.2, 0.2, 0, Cadena2.GLindex);
+	glEnable(GL_LIGHTING);
+	glRotatef(90, 0, 1, 0);
+	glDisable(GL_LIGHTING);
+	fig4.prisma(0.2, 0.2, 0, Cadena2.GLindex);
+	glEnable(GL_LIGHTING);
+	glDisable(GL_ALPHA_TEST);
+
+}
 
 
 void display ( void )   // Creamos la funcion donde se dibuja
@@ -213,14 +254,47 @@ void display ( void )   // Creamos la funcion donde se dibuja
 
 					glPopMatrix();
 
-					glTranslatef(-0.75, 1.225, 4.875);
+					glPushMatrix();
+						// Puerta de la camara de tortura
+						glTranslatef(-0.75, 1.225, 4.875);
+						glRotatef(45,0,1,0); // giro de la puerta
+						glTranslatef(0.75, 0.0, 0.0);
+						glDisable(GL_LIGHTING);
+						fig2.prisma(2.2, 1.5, 0.0, 0);
+						glEnable(GL_LIGHTING);
+
+					glPopMatrix();
 
 					glPushMatrix();
 
-					glRotatef(45,0,1,0); // giro de la puerta
+						glDisable(GL_LIGHTING);
+						glTranslatef(0.0, 2.75, 0.0);
+						Techo.prisma(0.25, 10.0, 10.0, 0.0);
+						glEnable(GL_LIGHTING);
 
-					glTranslatef(0.75, 0.0, 0.0);
-					fig2.prisma(2.2, 1.5, 0.0, 0);
+					glPopMatrix();
+
+					glPushMatrix();
+
+						glTranslatef(0.0, 2.625, 0.0);
+						for (size_t i = 0; i < 5; i++)
+						{
+
+							cadena1();
+							glTranslatef(0.0, -0.2, 0.0);
+							cadena2();
+							glTranslatef(0.0, -0.2, 0.0);
+
+						}
+						
+					glPopMatrix();
+
+					glPushMatrix();
+						//Para que el femur conserve sus colores
+						//glDisable(GL_COLOR_MATERIAL);
+						glTranslatef(1,1,1);
+						glScalef(0.001, 0.001, 0.001);
+						femur.GLrender(NULL, _SHADED, 1.0);  
 
 					glPopMatrix();
 
