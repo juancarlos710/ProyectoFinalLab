@@ -36,13 +36,18 @@ GLfloat m_s1[] = {18};
 CTexture text1;
 CTexture Suelo_Tierra;
 CTexture Muro_Roca;
-CTexture Cadena1;	//Pavimento
+CTexture Muro_Huesos;
+CTexture Sangre;
+CTexture Sangre_2;
+CTexture Cadena1;
 CTexture Cadena2;	//Pasto01
 CTexture text6;	//Casa01
 
 CFiguras Pared;
 CFiguras Suelo;
 CFiguras Techo;
+
+CFiguras Muebles_Tortura;
 
 CFiguras fig1;
 CFiguras fig2;
@@ -56,6 +61,8 @@ CFiguras fig7; //Para el monito
 //Figuras de 3D Studio
 
 CModel femur;
+
+//CModel Arbol_Muerto;
 
 CModel kit;
 CModel llanta;
@@ -110,8 +117,21 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	Cadena2.BuildGLTexture();
 	Cadena2.ReleaseImage();
 
+	Muro_Huesos.LoadTGA("Muro_Huesos.tga");
+	Muro_Huesos.BuildGLTexture();
+	Muro_Huesos.ReleaseImage();
+
+	Sangre.LoadTGA("Sangre.tga");
+	Sangre.BuildGLTexture();
+	Sangre.ReleaseImage();
+
+	Sangre_2.LoadTGA("Sangre_2.tga");
+	Sangre_2.BuildGLTexture();
+	Sangre_2.ReleaseImage();
+
 	//Carga de Figuras
 	femur._3dsLoad("FEMUR.3ds");
+	//Arbol_Muerto._3dsLoad("Arbol_Muerto.3ds");
 
 	kit._3dsLoad("kitt.3ds");	
 	//kit.VertexNormals();
@@ -196,108 +216,609 @@ void display ( void )   // Creamos la funcion donde se dibuja
 				glPushMatrix();
 
 					// Suelo de Camara
-					glDisable(GL_LIGHTING);
+					//glDisable(GL_LIGHTING);
 					Suelo.prisma(0.25, 10.0, 10.0, Suelo_Tierra.GLindex);
-					glEnable(GL_LIGHTING);
-
-					glPushMatrix();
-						// Muro trasero
-						glTranslatef(0.0, 1.375, -4.875);
-						glDisable(GL_LIGHTING);
-						Pared.prisma(2.5, 10.0, 0.25, Muro_Roca.GLindex);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
-					glPushMatrix();
-						// Muro derecho
-						glTranslatef(4.875, 1.375, 0.0);
-						glDisable(GL_LIGHTING);
-						Pared.prisma(2.5, 0.25, 9.5, Muro_Roca.GLindex);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
-					glPushMatrix();
-						// Muro izquierdo
-						glTranslatef(-4.875, 1.375, 0.0);
-						glDisable(GL_LIGHTING);
-						Pared.prisma(2.5, 0.25, 9.5, Muro_Roca.GLindex);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
-					glPushMatrix();
-						// Primera parte del Muro de enfrente
-						glTranslatef(-2.875, 1.375, 4.875);
-						glDisable(GL_LIGHTING);
-						Pared.prisma(2.5, 4.25, 0.25, Muro_Roca.GLindex);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
-					glPushMatrix();
-						// Segunda parte del Muro de enfrente
-						glTranslatef(2.875, 1.375, 4.875);
-						glDisable(GL_LIGHTING);
-						Pared.prisma(2.5, 4.25, 0.25, Muro_Roca.GLindex);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
-					glPushMatrix();
-						// Tercera parte del Muro de enfrente arriba del la puerta
-						glTranslatef(0.0, 2.475, 4.875);
-						glDisable(GL_LIGHTING);
-						Pared.prisma(0.3, 1.5, 0.25, Muro_Roca.GLindex);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
-					glPushMatrix();
-						// Puerta de la camara de tortura
-						glTranslatef(-0.75, 1.225, 4.875);
-						glRotatef(45,0,1,0); // giro de la puerta
-						glTranslatef(0.75, 0.0, 0.0);
-						glDisable(GL_LIGHTING);
-						fig2.prisma(2.2, 1.5, 0.0, 0);
-						glEnable(GL_LIGHTING);
-
-					glPopMatrix();
-
+					//glEnable(GL_LIGHTING);
 					glPushMatrix();
 
-						glDisable(GL_LIGHTING);
-						glTranslatef(0.0, 2.75, 0.0);
-						Techo.prisma(0.25, 10.0, 10.0, 0.0);
-						glEnable(GL_LIGHTING);
+						glTranslatef(0.0, 0.125, 0.0);
 
-					glPopMatrix();
+						glPushMatrix();
+							// Muro trasero
+							glTranslatef(0.0, 2.0, -4.875);
+							//glDisable(GL_LIGHTING);
+							Pared.prisma(4.0, 10.0, 0.25, Muro_Roca.GLindex);
+							//glEnable(GL_LIGHTING);
 
-					glPushMatrix();
+						glPopMatrix();
 
-						glTranslatef(0.0, 2.625, 0.0);
-						for (size_t i = 0; i < 5; i++)
-						{
+						glPushMatrix();
+							// Muro derecho
+							glTranslatef(4.875, 2.0, 0.0);
+							//glDisable(GL_LIGHTING);
+							Pared.prisma(4.0, 0.25, 9.5, Muro_Roca.GLindex);
+							//glEnable(GL_LIGHTING);
 
-							cadena1();
-							glTranslatef(0.0, -0.2, 0.0);
-							cadena2();
-							glTranslatef(0.0, -0.2, 0.0);
+						glPopMatrix();
 
-						}
+						glPushMatrix();
+							// Muro izquierdo
+							glTranslatef(-4.875, 2.0, 0.0);
+							//glDisable(GL_LIGHTING);
+							Pared.prisma(4.0, 0.25, 9.5, Muro_Roca.GLindex);
+							//glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Primera parte del Muro de enfrente
+							glTranslatef(-2.875, 2.0, 4.875);
+							//glDisable(GL_LIGHTING);
+							Pared.prisma(4.0, 4.25, 0.25, Muro_Roca.GLindex);
+							//glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Segunda parte del Muro de enfrente
+							glTranslatef(2.875, 2.0, 4.875);
+							//glDisable(GL_LIGHTING);
+							Pared.prisma(4.0, 4.25, 0.25, Muro_Roca.GLindex);
+							//glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Tercera parte del Muro de enfrente arriba del la puerta
+							glTranslatef(0.0, 3.3, 4.875);
+							glDisable(GL_LIGHTING);
+							Pared.prisma(1.4, 1.5, 0.25, Muro_Roca.GLindex);
+							glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Puerta de la camara de tortura
+							glTranslatef(-0.75, 1.3, 4.875);
+							glRotatef(45,0,1,0); // giro de la puerta
+							glTranslatef(0.75, 0.0, 0.0);
+							//glDisable(GL_LIGHTING);
+							fig2.prisma(2.6, 1.5, 0.0, 0);
+							//glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+						glPushMatrix();
+
+							// techo camara de tortura
+							//glDisable(GL_LIGHTING);
+							glTranslatef(0.0, 4.0, 0.0);
+							Techo.prisma(0.25, 10.0, 10.0, Muro_Huesos.GLindex);
+							//glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+						// Detalles Suelo
+						glPushMatrix();
+
+							// Sangre
+							glEnable(GL_ALPHA_TEST);
+							glAlphaFunc(GL_GREATER, 0.1);
+							glDisable(GL_LIGHTING);
+							Techo.prisma(0.0, 10.0, 10.0, Sangre_2.GLindex);
+							glEnable(GL_LIGHTING);
+							glDisable(GL_ALPHA_TEST);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// cadenas
+							glTranslatef(0.0, 2.625, 0.0);
+							for (size_t i = 0; i < 5; i++)
+							{
+	
+								cadena1();
+								glTranslatef(0.0, -0.2, 0.0);
+								cadena2();
+								glTranslatef(0.0, -0.2, 0.0);
+
+							}
 						
+						glPopMatrix();
+
+						glPushMatrix();
+							//Para que el femur conserve sus colores
+							//glDisable(GL_COLOR_MATERIAL);
+							glTranslatef(1,1,1);
+							glScalef(0.001, 0.001, 0.001);
+							femur.GLrender(NULL, _SHADED, 1.0);  
+
+						glPopMatrix();
+
+						glPushMatrix();
+							//Para que el femur conserve sus colores
+							//glDisable(GL_COLOR_MATERIAL);
+							glTranslatef(1, 1, 1);
+							glRotatef(90, 0, 1, 0);
+							glScalef(0.001, 0.001, 0.001);
+							femur.GLrender(NULL, _SHADED, 1.0);
+
+						glPopMatrix();
+
 					glPopMatrix();
+
+					// Muebles de tortura
 
 					glPushMatrix();
-						//Para que el femur conserve sus colores
-						//glDisable(GL_COLOR_MATERIAL);
-						glTranslatef(1,1,1);
-						glScalef(0.001, 0.001, 0.001);
-						femur.GLrender(NULL, _SHADED, 1.0);  
+
+						// Base de intrumento de tortura
+						glTranslatef(10,0,10);
+						glPushMatrix();
+
+							glScalef(4.0, 0.2, 1.6);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Colunna con base derecho
+							glPushMatrix();
+
+								// Columna
+								glTranslatef(1.6, 1.6, 0.0);
+								glScalef(0.4, 3.0, 0.4);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 1 colunna
+								glTranslatef(1.6, 0.35, 0.35);
+								glRotatef(90,0,1,0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.2, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 2 colunna
+								glTranslatef(1.6, 0.35, -0.35);
+								glRotatef(-90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.2, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Colunna con base izquierdo
+							glPushMatrix();
+
+								// Columna
+								glTranslatef(-1.6, 1.6, 0.0);
+								glScalef(0.4, 3.0, 0.4);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 1 colunna
+
+								glTranslatef(-1.6, 0.35, 0.35);
+								glRotatef(90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.2, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 2 colunna
+								glTranslatef(-1.6, 0.35, -0.35);
+								glRotatef(-90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.2, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+						glPopMatrix();
+
+						glPushMatrix();
+
+							// Trave
+							glTranslatef(0.0, 2.9, 0.0);
+							glScalef(3.0, 0.4, 0.4);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Apollo 1 trave
+							glTranslatef(1.25, 2.45, 0.0);
+							glRotatef(45, 0, 0, 1);
+							glScalef(0.3, 1.0, 0.3);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+						
+						glPopMatrix();
+						
+						glPushMatrix();
+							// Apollo 2 trave
+							glTranslatef(-1.25, 2.45, 0.0);
+							glRotatef(-45, 0, 0, 1);
+							glScalef(0.3, 1.0, 0.3);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+						
+						glPopMatrix();
+						
+						glPushMatrix();
+							// Sierra
+							glTranslatef(0.0, 1.5, 0.0);
+							
+							glPushMatrix();
+								// Cuchillas
+								glScalef(0.005, 0.3, 2.0);
+								Muebles_Tortura.prisma3(0,0,0,0,0,0);
+							glPopMatrix();
+							
+							glPushMatrix();
+								// Mango
+								glTranslatef(0.0, -0.2, 1.0);
+								Muebles_Tortura.cilindro(0.03, 0.4, 40, 0);
+							glPopMatrix();
+							
+							glPushMatrix();
+								// Mango
+								glTranslatef(0.0, -0.2, -1.0);
+								Muebles_Tortura.cilindro(0.03, 0.4, 40, 0);
+							glPopMatrix();
+						
+						glPopMatrix();
+					
+					glPopMatrix();
+					
+					glPushMatrix();
+						// Guillotina
+
+						glTranslatef(20, 0, 20);
+
+						glPushMatrix();
+					
+							// Base de gillotina
+							glScalef(2.0, 0.2, 1.6);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+												
+						glPopMatrix();
+						
+						glPushMatrix();
+							// Colunna con base izquierdo
+							glPushMatrix();
+
+								// Columna
+								glTranslatef(-0.7, 1.6, 0.0);
+								glScalef(0.2, 3.0, 0.3);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 1 colunna
+
+								glTranslatef(-0.7, 0.35, 0.35);
+								glRotatef(90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.15, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 2 colunna
+								glTranslatef(-0.7, 0.35, -0.35);
+								glRotatef(-90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.15, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+						glPopMatrix();
+		
+						glPushMatrix();
+							// Colunna con base derecho
+							glPushMatrix();
+
+								// Columna
+								glTranslatef(0.7, 1.6, 0.0);
+								glScalef(0.2, 3.0, 0.3);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 1 colunna
+
+								glTranslatef(0.7, 0.35, 0.35);
+								glRotatef(90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.15, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+							glPushMatrix();
+
+								// Apollo 2 colunna
+								glTranslatef(0.7, 0.35, -0.35);
+								glRotatef(-90, 0, 1, 0);
+								glRotatef(-45, 0, 0, 1);
+								glScalef(0.15, 1.0, 0.2);
+								Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+							glPopMatrix();
+
+						glPopMatrix();
+						
+						glPushMatrix();
+						
+							// Trave
+							glTranslatef(0.0, 3.0, 0.0);
+							Muebles_Tortura.prisma(0.2, 1.2, 0.3, 0.0);
+						
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// Donde va la cabeza
+							glTranslatef(0.0, 0.65, 0.075);
+							glScalef(1.2, 0.7, 0.15);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+							
+						glPopMatrix();
+
+						glPushMatrix();
+
+							//mango
+							glTranslatef(0.0, 2.825, 0.005);
+							Muebles_Tortura.prisma(0.15, 1.2, 0.15, 0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// Cuchilla
+							glTranslatef(0.0, 2.40, -0.005);
+							glScalef(1.2, 0.7, 0.0);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+							
+						glPopMatrix();
+		
+					glPopMatrix();
+					
+					glPushMatrix();
+					
+					glTranslatef(0,0,10);
+
+						// Rueda
+						glPushMatrix();
+
+							// Base de rueda
+							glScalef(4.2, 0.2, 0.25);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Primer Soporte de la rueda
+							glTranslatef(1.0, 1.0, 0.0);
+							glRotatef(45, 0, 0, 1);
+							glScalef(0.2, 2.83, 0.2);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							// segundo Soporte de la rueda
+							glTranslatef(-1.0, 1.0, 0.0);
+							glRotatef(-45, 0, 0, 1);
+							glScalef(0.2, 2.83, 0.2);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							// Tercer Soporte de la rueda
+							glTranslatef(0.0, 1.1, 0.0);
+							glScalef(0.2, 2.0, 0.2);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+
+							// Rueda 1
+							glTranslatef(0.0, 1.86, 0.10);
+							glRotatef(90, 1, 0, 0);
+							Muebles_Tortura.cilindro(1.42, 0.15, 50, 0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Rueda Central
+							glTranslatef(0.0, 1.86, 0.25);
+							glRotatef(90, 1, 0, 0);
+							Muebles_Tortura.cilindro(1.36, 1.5, 50, 0);
+
+						glPopMatrix();
+						
+						glTranslatef(0.0, 0.0, 2.0);
+						
+						glPushMatrix();
+
+							// Base de rueda
+							glScalef(4.2, 0.2, 0.25);
+							Muebles_Tortura.prisma3(0,0,0,0,0,0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+							// Primer Soporte de la rueda
+							glTranslatef(1.0, 1.0, 0.0);
+							glRotatef(45, 0, 0, 1);
+							glScalef(0.2, 2.83, 0.2);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							// segundo Soporte de la rueda
+							glTranslatef(-1.0, 1.0, 0.0);
+							glRotatef(-45, 0, 0, 1);
+							glScalef(0.2, 2.83, 0.2);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							// Tercer Soporte de la rueda
+							glTranslatef(0.0, 1.1, 0.0);
+							glScalef(0.2, 2.0, 0.2);
+							Muebles_Tortura.prisma3(0, 0, 0, 0, 0, 0);
+
+						glPopMatrix();
+
+						glPushMatrix();
+
+							// Rueda 2
+							glTranslatef(0.0, 1.86, -0.25);
+							glRotatef(90, 1, 0, 0);
+							Muebles_Tortura.cilindro(1.42, 0.15, 50, 0);
+
+						glPopMatrix();
+					
+					glPopMatrix();
+					
+					glPushMatrix();
+						
+						glTranslatef(-10,0,10);
+						
+						glPushMatrix();
+							
+							// pata frontal derecha
+							glTranslatef(0.365, 1.3, 0.365);
+							glRotatef(-8, 1, 0, 0);
+							glRotatef(-8, 0, 1, 0);
+							glRotatef(8, 0, 0, 1);
+							glTranslatef(0.0, -0.65, 0.0);
+							
+							glScalef(0.15, 1.3, 0.15);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// pata frontal izquierda
+							glTranslatef(-0.365, 1.3, 0.365);
+							glRotatef(-8, 1, 0, 0);
+							glRotatef(-8, 0, 1, 0);
+							glRotatef(-8, 0, 0, 1);
+							glTranslatef(0.0, -0.65, 0.0);
+							
+							glScalef(0.15, 1.3, 0.15);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// pata trasera derecha
+							glTranslatef(0.365, 1.3, -0.365);
+							glRotatef(8, 1, 0, 0);
+							glRotatef(-8, 0, 1, 0);
+							glRotatef(8, 0, 0, 1);
+							glTranslatef(0.0, -0.65, 0.0);
+							
+							glScalef(0.15, 1.3, 0.15);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// pata trasera izquierda
+							glTranslatef(-0.365, 1.3, -0.365);
+							glRotatef(8, 1, 0, 0);
+							glRotatef(-8, 0, 1, 0);
+							glRotatef(-8, 0, 0, 1);
+							glTranslatef(0.0, -0.65, 0.0);
+							
+							glScalef(0.15, 1.3, 0.15);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// union trasera
+							glTranslatef(0.0, 0.65, -0.455);
+							glRotatef(8, 1, 0, 0);
+							glScalef(0.91, 0.12, 0.12);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// union delantera
+							glTranslatef(0.0, 0.65, 0.455);
+							glRotatef(-8, 1, 0, 0);
+							glScalef(0.91, 0.12, 0.12);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// union izquierda
+							glTranslatef(0.455, 0.65, 0.0);
+							glRotatef(8, 0, 0, 1);
+							glScalef(0.12, 0.12, 0.91);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+						
+						glPushMatrix();
+							
+							// union deracha
+							glTranslatef(-0.455, 0.65, 0.0);
+							glRotatef(-8, 0, 0, 1);
+							glScalef(0.12, 0.12, 0.91);
+							Muebles_Tortura.prisma2(0,0);
+
+						glPopMatrix();
+
+						// haciento de la muerte
+						glPushMatrix();
+
+							glTranslatef(0.0, 1.3, 0.0);
+							glRotatef(45, 0, 1, 0);
+							Muebles_Tortura.cono(1.0, 0.64, 4, 0);
+
+						glPopMatrix();
 
 					glPopMatrix();
-
+					
 				glPopMatrix();
 
 		glPopMatrix();
