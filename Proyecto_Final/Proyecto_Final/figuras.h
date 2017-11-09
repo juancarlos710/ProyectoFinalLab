@@ -21,6 +21,7 @@ class CFiguras
 	void prisma2 (GLuint text, GLuint text2);
 	void prisma3(GLuint frente, GLuint derecha, GLuint espalda, GLuint izquierda, GLuint fondo, GLuint arriba);
 	void skybox(float altura, float largo, float profundidad, GLuint text);	//Funcion creacion cielo
+	void skybox2(float altura, float largo, float profundidad, GLuint text);
 	
 
 	//void torus(GLfloat radioM, GLfloat radiom, int meridianos, int paralelos, GLuint text );
