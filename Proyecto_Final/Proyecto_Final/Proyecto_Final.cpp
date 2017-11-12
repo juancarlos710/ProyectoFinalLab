@@ -57,11 +57,14 @@ CTexture Cadena1;
 CTexture Cadena2;	//Pasto01
 CTexture text6;	//Casa01
 
+CTexture T_Piramide;
+
 CFiguras Pared;
 CFiguras Suelo;
 CFiguras Techo;
 
 CFiguras Muebles_Tortura;
+CFiguras Priramide;
 
 CFiguras fig1;
 CFiguras fig2;
@@ -187,6 +190,9 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	VentanillaCabeza.BuildGLTexture();
 	VentanillaCabeza.ReleaseImage();
 
+	T_Piramide.LoadTGA("T_Piramide.tga");
+	T_Piramide.BuildGLTexture();
+	T_Piramide.ReleaseImage();
 
 	//Carga de Figuras
 	femur._3dsLoad("FEMUR.3ds");
@@ -738,32 +744,16 @@ void Partidor_de_Humanos(void) {
 
 }
 
-void display ( void )   // Creamos la funcion donde se dibuja
+void Cuarto_Siniestro ( void )
 {
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glLoadIdentity();
-	
-	glPushMatrix();
 
-		glRotatef(g_lookupdown,1.0f,0,0);
 
-		gluLookAt(	objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,	
-					objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,	
-					objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
-	
 
-		glPushMatrix();		
-			glPushMatrix(); //Creamos cielo
-				glDisable(GL_LIGHTING);
-				glTranslatef(0,60,0);
-				fig1.skybox(130.0, 130.0, 130.0,text1.GLindex);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
+}
 
-			//Para que el comando glColor funcione con iluminacion
-			glEnable(GL_COLOR_MATERIAL);
-			
+void Camara_Tortura ( void )
+{
+
 				// Camara de Tortura
 				glPushMatrix();
 
@@ -934,6 +924,79 @@ void display ( void )   // Creamos la funcion donde se dibuja
 					glPopMatrix();
 					
 				glPopMatrix();
+
+}
+
+void Piramide_Sacrificios ( void )
+{
+
+	glPushMatrix();
+	glPopMatrix();
+	glPushMatrix();
+
+		Priramide.piramide(10.0, 9.0, 1.0, T_Piramide.GLindex);
+		glTranslatef(0.0, 1.0, 0.0);
+		glPushMatrix();
+			Priramide.piramide(8.5, 8.0, 1.0, T_Piramide.GLindex);
+			glTranslatef(0.0, 1.0, 0.0);
+			glPushMatrix();
+				Priramide.piramide(7.5, 7.0, 1.0, T_Piramide.GLindex);
+				glTranslatef(0.0, 1.0, 0.0);
+				glPushMatrix();
+					Priramide.piramide(6.5, 6.0, 1.0, T_Piramide.GLindex);
+					glTranslatef(0.0, 1.0, 0.0);
+					glPushMatrix();
+						Priramide.piramide(5.5, 5.0, 1.0, T_Piramide.GLindex);
+						glTranslatef(0.0, 1.0, 0.0);
+						glPushMatrix();
+							Priramide.piramide(4.5, 4.0, 1.0, T_Piramide.GLindex);
+							glTranslatef(0.0, 1.0, 0.0);
+							glPushMatrix();
+								Priramide.piramide(3.5, 3.0, 1.0, T_Piramide.GLindex);
+								glTranslatef(0.0, 1.0, 0.0);
+								glPushMatrix();
+									Priramide.piramide(2.5, 2.0, 1.0, T_Piramide.GLindex);
+									glTranslatef(0.0, 1.0, 0.0);
+								glPopMatrix();
+							glPopMatrix();
+						glPopMatrix();
+					glPopMatrix();
+				glPopMatrix();
+			glPopMatrix();
+		glPopMatrix();
+	glPopMatrix();
+
+}
+
+void display ( void )   // Creamos la funcion donde se dibuja
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glLoadIdentity();
+	
+	glPushMatrix();
+
+		glRotatef(g_lookupdown,1.0f,0,0);
+
+		gluLookAt(	objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,	
+					objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,	
+					objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+	
+
+		glPushMatrix();		
+			glPushMatrix(); //Creamos cielo
+				glDisable(GL_LIGHTING);
+				glTranslatef(0,60,0);
+				fig1.skybox(130.0, 130.0, 130.0,text1.GLindex);
+				glEnable(GL_LIGHTING);
+			glPopMatrix();
+
+			//Para que el comando glColor funcione con iluminacion
+			glEnable(GL_COLOR_MATERIAL);
+			
+			//Camara_Tortura();
+			Piramide_Sacrificios();
+
 
 		glPopMatrix();
 	glPopMatrix();
