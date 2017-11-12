@@ -58,6 +58,8 @@ CTexture Cadena2;	//Pasto01
 CTexture text6;	//Casa01
 
 CTexture T_Piramide;
+CTexture Piedra_Gris;
+CTexture Decoracion_P_Sacrificios;
 
 CFiguras Pared;
 CFiguras Suelo;
@@ -193,6 +195,14 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	T_Piramide.LoadTGA("T_Piramide.tga");
 	T_Piramide.BuildGLTexture();
 	T_Piramide.ReleaseImage();
+
+	Piedra_Gris.LoadTGA("Piedra_Gris.tga");
+	Piedra_Gris.BuildGLTexture();
+	Piedra_Gris.ReleaseImage();
+
+	Decoracion_P_Sacrificios.LoadTGA("Decoracion_P_Sacrificios.tga");
+	Decoracion_P_Sacrificios.BuildGLTexture();
+	Decoracion_P_Sacrificios.ReleaseImage();
 
 	//Carga de Figuras
 	femur._3dsLoad("FEMUR.3ds");
@@ -933,7 +943,6 @@ void Piramide_Sacrificios ( void )
 	glPushMatrix();
 	glPopMatrix();
 	glPushMatrix();
-
 		Priramide.piramide(10.0, 9.0, 1.0, T_Piramide.GLindex);
 		glTranslatef(0.0, 1.0, 0.0);
 		glPushMatrix();
@@ -965,6 +974,40 @@ void Piramide_Sacrificios ( void )
 			glPopMatrix();
 		glPopMatrix();
 	glPopMatrix();
+	glPushMatrix();
+		//glBegin(GL_LINES);
+		//glVertex3f(0,0,0);
+		//glVertex3f(100,0,0);
+		//glVertex3f(0, 0, 0);
+		//glVertex3f(0, 100, 0);
+		//glVertex3f(0, 0, 0);
+		//glVertex3f(0, 0, 100);
+		//glEnd();
+		// Escaleras
+		glTranslatef(-3.0, 3.5, -0.8);
+		Priramide.paralelogramo(1.0, 0.4, 8.0, 63.435, Piedra_Gris.GLindex);
+	glPopMatrix();
+	glPushMatrix();
+		glTranslatef(-3.0, 3.5, 0.8);
+		Priramide.paralelogramo(1.0, 0.4, 8.0, 63.435, Piedra_Gris.GLindex);
+	glPopMatrix();
+	glPushMatrix();
+		glTranslatef(-5.1, -0.3, 0.0);
+		for (size_t i = 0; i < 20; i++)
+		{
+			fig6.prisma(0.4, 0.20, 1.5, Piedra_Gris.GLindex);
+			glTranslatef(0.20, 0.4, 0.0);
+		}
+	glPopMatrix();
+	glPushMatrix();
+		glTranslatef(-0.2, 7.524, 0.0);
+		fig6.prisma(0.05, 2.4, 2.0, Piedra_Gris.GLindex);
+	glPopMatrix();
+	glPushMatrix();
+		glTranslatef(0.0, 7.87, 0.0);
+		glScalef(1.0, 0.7, 0.5);
+		fig6.prisma2(Piedra_Gris.GLindex, Piedra_Gris.GLindex);
+	glPopMatrix();
 
 }
 
@@ -995,8 +1038,7 @@ void display ( void )   // Creamos la funcion donde se dibuja
 			glEnable(GL_COLOR_MATERIAL);
 			
 			//Camara_Tortura();
-			Piramide_Sacrificios();
-
+			//Piramide_Sacrificios();
 
 		glPopMatrix();
 	glPopMatrix();

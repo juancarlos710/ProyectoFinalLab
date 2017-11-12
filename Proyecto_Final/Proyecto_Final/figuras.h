@@ -17,6 +17,7 @@ class CFiguras
 	void cilindro(float radio, float altura, int resolucion, GLuint text);	//Funcíon creacion cilindro
 	void cono(float altura, float radio, int resolucion, GLuint text);		//Funcíon creacion cono
 	void prisma_anun (GLuint text, GLuint text2);							//Funcíon creacion movimiento
+	void paralelogramo(float largo, float profundidad, float altura, float angulo, GLuint text);
 	void piramide(float BaseMayor, float Basemenor, float altura, GLuint text);
 	void prisma (float altura, float largo, float profundidad, GLuint text);//Funcíon creacion prisma
 	void prisma2 (GLuint text, GLuint text2);
