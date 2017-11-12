@@ -803,7 +803,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 		objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
 		objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
 	//Castillo
- 
+
 		for (j = 0; j < 4; j++) {
 			glPushMatrix();
 				glColor3f(1, 1, 1);
@@ -823,21 +823,23 @@ void display(void)   // Creamos la funcion donde se dibuja
 				glTranslatef(0, 7, 0);
 					glPushMatrix();
 						for (i = 0; i < 4; i++) {
-							glColor3f(0.8, 0, 0);
+							glDisable(GL_TEXTURE_2D);
+							glColor3f(0.5, 0, 0);
 							glRotatef(90 * i, 0, 1, 0);
 							glBegin(GL_QUAD_STRIP);
-							glNormal3f(-1, -1, -1);
-							glVertex3f(-2.5, 0, 2.5);
-							glNormal3f(-1, -1, -1);
-							glVertex3f(2.5, 0, 2.5);
-							glNormal3f(0, -1, 1);
-							glVertex3f(-4.1, 0.5, 4.1);
-							glNormal3f(0, -1, 1);
-							glVertex3f(4.1, 0.5, 4.1);
-							glNormal3f(0, 0, 1);
-							glVertex3f(-4.1, 1.5, 4.1);
-							glVertex3f(4.1, 1.5, 4.1);
+								glNormal3f(-1, -1, -1);
+								glVertex3f(-2.5, 0, 2.5);
+								glNormal3f(-1, -1, -1);
+								glVertex3f(2.5, 0, 2.5);
+								glNormal3f(0, -1, -1);
+								glVertex3f(-4.1, 0.5, 4.1);
+								glNormal3f(0, -1, -1);
+								glVertex3f(4.1, 0.5, 4.1);
+								glNormal3f(0, 0, 1);
+								glVertex3f(-4.1, 1.5, 4.1);
+								glVertex3f(4.1, 1.5, 4.1);
 							glEnd();
+							glEnable(GL_TEXTURE_2D);
 							glPushMatrix();
 								glNormal3f(0, 0, 1);
 								glColor3f(0.8, 0, 0);
@@ -877,8 +879,24 @@ void display(void)   // Creamos la funcion donde se dibuja
 		for (j = 0; j < 4; j++) {
 			glPushMatrix();
 				glRotatef(90 * j, 0, 1, 0);
+				
+				glTranslatef(0,0,17.5);
+				glColor3f(1.0, 1.0, 1.0);
+				if (j==0) {
+					glBindTexture(GL_TEXTURE_2D, Frente.GLindex);
+				}
+				else {
+					glBindTexture(GL_TEXTURE_2D, Ladrillos.GLindex);
+				}
+					glBegin(GL_QUADS);
+							glNormal3f(0, 0, -1);
+							glTexCoord2d(0, 0); glVertex3f(-17.5, 0, 0);
+							glTexCoord2d(0, 1);	glVertex3f(-17.5,12.1, 0);
+							glTexCoord2d(1, 1);	glVertex3f(17.5,12.1, 0);
+							glTexCoord2d(1, 0);	glVertex3f(17.5,0, 0);
+					glEnd();
 				glColor3f(0.8, 0, 0);
-				glTranslatef(0, 12.1, 17.5);
+				glTranslatef(0, 12.1, 0);
 				Torre.prisma(0.2, 35, 0.6, 0);
 				glTranslatef(0, 0.3, 0);
 				glColor3f(0.01, 0.01, 0.01);
@@ -903,8 +921,25 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 		glPushMatrix();
 			glColor3f(1, 1, 1);
-			glTranslatef(0, 6.1, 0);
-			Torre.prisma(12, 35, 35, Ladrillos.GLindex);
+			//glTranslatef(0, 6.1, 0);
+			glBindTexture(GL_TEXTURE_2D, Suelo_Tierra.GLindex);
+			glBegin(GL_QUADS);
+				glNormal3f(0, 1, 0);
+				glTexCoord2d(0, 0); glVertex3f(-17.5, 0.01,-17.5);
+				glTexCoord2d(0, 1);	glVertex3f(-17.5, 0.01,17.5);
+				glTexCoord2d(1, 1);	glVertex3f(17.5, 0.01,17.5);
+				glTexCoord2d(1, 0);	glVertex3f(17.5, 0.01,-17.5);
+			glEnd();
+
+			glBindTexture(GL_TEXTURE_2D, Muro_Huesos.GLindex);
+			glBegin(GL_QUADS);
+			glNormal3f(0, 1, 0);
+			glTexCoord2d(0, 0); glVertex3f(-17.5, 12.01, -17.5);
+			glTexCoord2d(0, 1);	glVertex3f(-17.5, 12.01, 17.5);
+			glTexCoord2d(1, 1);	glVertex3f(17.5, 12.01, 17.5);
+			glTexCoord2d(1, 0);	glVertex3f(17.5, 12.01, -17.5);
+			glEnd();
+			//Torre.prisma(12, 35, 35, Ladrillos.GLindex);
 		glPopMatrix();
 	
 
