@@ -113,17 +113,17 @@ bool ActivacionCabeza = false;
 //NEW// Keyframes
 //Variables de dibujo y manipulacion
 
-float movCabezaX = 0.0, movCabezay = 0.0, girarCabeza = 0.0;
+float movCabezaX = 0.0, movCabezay = 0.0, girarCabezaX = 0.0, girarCabezaY = 0.0;
 
-#define MAX_FRAMES 5
-int i_max_steps = 90;
+#define MAX_FRAMES 25
+int i_max_steps = 20;
 int i_curr_steps = 0;
 
 typedef struct _frame
 {
 
-	float movCabezaX = 0.0, movCabezay = 0.0, girarCabeza = 0.0;
-	float incmovCabezaX = 0.0, incmovCabezay = 0.0, incgirarCabeza = 0.0;
+	float movCabezaX = 0.0, movCabezay = 0.0, girarCabezaX = 0.0, girarCabezaY = 0.0;
+	float incmovCabezaX = 0.0, incmovCabezay = 0.0, incgirarCabezaX = 0.0, incgirarCabezaY = 0.0;
 
 }FRAME;
 
@@ -207,16 +207,26 @@ void LecturaArchivo(void) {
 			else  if (cont == 2 && signo)
 			{
 				valor = valor*(-1);
-				KeyFrame[aux].girarCabeza = valor; /*printf("%f", valor);*/
+				KeyFrame[aux].girarCabezaX = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 2)
+			{
+				KeyFrame[aux].girarCabezaX = valor; /*printf("%f", valor);*/
+			}
+			else  if (cont == 3 && signo)
+			{
+				valor = valor*(-1);
+				KeyFrame[aux].girarCabezaY = valor; /*printf("%f", valor);*/
 				aux++;
 				cont = 0;
 				i = 0;
 				signo = false;
 				continue;
 			}
-			else  if (cont == 2)
+			else  if (cont == 3)
 			{
-				KeyFrame[aux].girarCabeza = valor; /*printf("%f", valor);*/
+				KeyFrame[aux].girarCabezaY = valor; /*printf("%f", valor);*/
 				aux++;
 				cont = 0;
 				i = 0;
@@ -256,7 +266,8 @@ void saveFrame(void)
 
 	KeyFrame[FrameIndex].movCabezaX = movCabezaX; EscrituraArchivo(movCabezaX); //EscrituraArchivo(movCabezaX);
 	KeyFrame[FrameIndex].movCabezay = movCabezay; EscrituraArchivo(movCabezay); //EscrituraArchivo(movCabezay);
-	KeyFrame[FrameIndex].girarCabeza = girarCabeza; EscrituraArchivo(girarCabeza); //EscrituraArchivo(girarCabeza);
+	KeyFrame[FrameIndex].girarCabezaX = girarCabezaX; EscrituraArchivo(girarCabezaX); //EscrituraArchivo(girarCabeza);
+	KeyFrame[FrameIndex].girarCabezaY = girarCabezaY; EscrituraArchivo(girarCabezaY);
 
 	FrameIndex++; //EscrituraArchivo(FrameIndex);
 }
@@ -265,7 +276,8 @@ void resetElements(void)
 {
 	movCabezaX = KeyFrame[0].movCabezaX;
 	movCabezay = KeyFrame[0].movCabezay;
-	girarCabeza = KeyFrame[0].girarCabeza;
+	girarCabezaX = KeyFrame[0].girarCabezaX;
+	girarCabezaY = KeyFrame[0].girarCabezaY;
 
 }
 
@@ -273,7 +285,8 @@ void interpolation(void)
 {
 	KeyFrame[playIndex].incmovCabezaX = (KeyFrame[playIndex + 1].movCabezaX - KeyFrame[playIndex].movCabezaX) / i_max_steps;
 	KeyFrame[playIndex].incmovCabezay = (KeyFrame[playIndex + 1].movCabezay - KeyFrame[playIndex].movCabezay) / i_max_steps;
-	KeyFrame[playIndex].incgirarCabeza = (KeyFrame[playIndex + 1].girarCabeza - KeyFrame[playIndex].girarCabeza) / i_max_steps;
+	KeyFrame[playIndex].incgirarCabezaX = (KeyFrame[playIndex + 1].girarCabezaX - KeyFrame[playIndex].girarCabezaX) / i_max_steps;
+	KeyFrame[playIndex].incgirarCabezaY = (KeyFrame[playIndex + 1].girarCabezaY - KeyFrame[playIndex].girarCabezaY) / i_max_steps;
 
 }
 
@@ -633,7 +646,8 @@ void Guillotina(void) {
 		Cuerpo_decapitado.GLrender(NULL, _SHADED, 1.0);
 		glPushMatrix();
 			glTranslatef(0.0, movCabezay + 0.0, movCabezaX + 0.0);
-			glRotatef(girarCabeza + 0, 1, 0, 0);
+			glRotatef(girarCabezaX + 0, 1, 0, 0);
+			glRotatef(girarCabezaY + 0, 0, 0, 1);
 			glDisable(GL_COLOR_MATERIAL);
 			Cabeza_decapitada.GLrender(NULL, _SHADED, 1.0);
 		glPopMatrix();
@@ -1471,13 +1485,31 @@ void animacion()
 			else
 			{
 
-				movCuchilla -= 0.02; printf("%f", movCuchilla);
+				movCuchilla -= 0.02; //printf("%f", movCuchilla);
 
 			}
 
 		}
 		else if (ActivacionCabeza)
 		{
+
+			if (play == false && (FrameIndex>1))
+			{
+
+				resetElements();
+				//First Interpolation				
+				interpolation();
+
+				play = true;
+				playIndex = 0;
+				i_curr_steps = 0;
+			}
+			else
+			{
+				play = false;
+			}
+
+			ActivacionCabeza = false;
 
 			//movCabezax -= 0.02;
 			//movCabezay -= 0
@@ -1512,7 +1544,8 @@ void animacion()
 			//Draw animation
 			movCabezaX += KeyFrame[playIndex].incmovCabezaX;
 			movCabezay += KeyFrame[playIndex].incmovCabezay;
-			girarCabeza += KeyFrame[playIndex].incgirarCabeza;
+			girarCabezaX += KeyFrame[playIndex].incgirarCabezaX;
+			girarCabezaY += KeyFrame[playIndex].incgirarCabezaY;
 
 			i_curr_steps++;
 		}
@@ -1614,11 +1647,19 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 			break;
 
 		case 'c':
-			girarCabeza += 0.1;
+			girarCabezaX += 0.1;
 			break;
 
 		case 'C':
-			girarCabeza -= 0.1;
+			girarCabezaX -= 0.1;
+			break;
+
+		case 'v':
+			girarCabezaY += 0.1;
+			break;
+
+		case 'V':
+			girarCabezaY -= 0.1;
 			break;
 
 		case 27:        // Cuando Esc es presionado...
