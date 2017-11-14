@@ -154,9 +154,35 @@ int playIndex = 0;
 
 char a[50];
 
+//NEW// Keyframes ojo absorcion
+//Variables de dibujo y manipulacion
+
+float giroOjoX = 0.0, giroOjoY = 0.0, giroOjoZ = 0.0; //para el Ojo
+float rotEsqueletoY = 0.0, EscalamientoEsqueleto = 0.0, movEsqueletoX = 0.0, movEsqueletoY = 0.0; // para el esqueleto
+
+																								  //#define MAX_FRAMES 25
+int i_max_steps_1 = 20;
+int i_curr_steps_1 = 0;
+
+typedef struct _frame_1
+{
+
+	float giroOjoX = 0.0, giroOjoY = 0.0, giroOjoZ = 0.0; //para el Ojo
+	float incgiroOjoX = 0.0, incgiroOjoY = 0.0, incgiroOjoZ = 0.0; //para el Ojo
+	float rotEsqueletoY = 0.0, EscalamientoEsqueleto = 0.0, movEsqueletoX = 0.0, movEsqueletoY = 0.0; // para el esqueleto
+	float incrotEsqueletoY = 0.0, incEscalamientoEsqueleto = 0.0, incmovEsqueletoX = 0.0, incmovEsqueletoY = 0.0; // para el esqueleto
+
+}FRAME_1; // Movimiento del ojo y absorcion
+
+FRAME_1 KeyFrame_1[MAX_FRAMES];
+int FrameIndex_1 = 0;			//introducir datos
+bool play_1 = false;
+int playIndex_1 = 0;
+
 void EscrituraArchivo(float dato) {
 
-	FILE *flujo = fopen("datos.txt", "a");
+	//FILE *flujo = fopen("datos.txt", "a");
+	FILE *flujo = fopen("Ojo_Absorcion.txt", "a");
 	if (flujo == NULL)
 	{
 		perror("Error en archivo");
@@ -279,18 +305,164 @@ void LecturaArchivo(void) {
 
 }
 
-void saveFrame(void)
-{
+void LecturaArchivoOjo(void) {
 
-	printf("frameindex %d\n", FrameIndex); //EscrituraArchivo(FrameIndex);
+	FILE *flujo = fopen("Ojo_Absorcion.txt", "rb");
+	if (flujo == NULL)
+	{
+		perror("Error en la apertura del archivo");
+	}
 
-	KeyFrame[FrameIndex].movCabezaX = movCabezaX; EscrituraArchivo(movCabezaX); //EscrituraArchivo(movCabezaX);
-	KeyFrame[FrameIndex].movCabezay = movCabezay; EscrituraArchivo(movCabezay); //EscrituraArchivo(movCabezay);
-	KeyFrame[FrameIndex].girarCabezaX = girarCabezaX; EscrituraArchivo(girarCabezaX); //EscrituraArchivo(girarCabeza);
-	KeyFrame[FrameIndex].girarCabezaY = girarCabezaY; EscrituraArchivo(girarCabezaY);
+	int i = 0, cont = 0, aux = 0;
+	float valor = 0.0;
+	char caracter;
+	bool signo = false;
 
-	FrameIndex++; //EscrituraArchivo(FrameIndex);
+	while (feof(flujo) == 0)
+	{
+
+
+		a[i] = fgetc(flujo);
+
+		if (a[i] == '-')
+		{
+			a[i] = '0';
+			signo = true;
+		}
+
+		if (a[i] == '\n' || a[i] == '\0')
+		{
+			a[i] = '\0';
+			valor = atof(a);
+
+			if (cont == 0 && signo) {
+				valor = valor*(-1);
+				KeyFrame_1[aux].giroOjoX = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 0)
+			{
+				KeyFrame_1[aux].giroOjoX = valor;/* printf("%f", valor);*/
+			}
+			else  if (cont == 1 && signo) {
+				valor = valor*(-1);
+				KeyFrame_1[aux].giroOjoY = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 1)
+			{
+				KeyFrame_1[aux].giroOjoY = valor;/* printf("%f", valor);*/
+			}
+			else  if (cont == 2 && signo) {
+				valor = valor*(-1);
+				KeyFrame_1[aux].giroOjoZ = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 2)
+			{
+				KeyFrame_1[aux].giroOjoZ = valor;/* printf("%f", valor);*/
+			}
+			else  if (cont == 3 && signo) {
+				valor = valor*(-1);
+				KeyFrame_1[aux].rotEsqueletoY = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 3)
+			{
+				KeyFrame_1[aux].rotEsqueletoY = valor;/* printf("%f", valor);*/
+			}
+			else  if (cont == 4 && signo) {
+				valor = valor*(-1);
+				KeyFrame_1[aux].EscalamientoEsqueleto = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 4)
+			{
+				KeyFrame_1[aux].EscalamientoEsqueleto = valor;/* printf("%f", valor);*/
+			}
+			else  if (cont == 5 && signo) {
+				valor = valor*(-1);
+				KeyFrame_1[aux].movEsqueletoX = valor; /*printf("%f", valor);*/
+				signo = false;
+			}
+			else  if (cont == 5)
+			{
+				KeyFrame_1[aux].movEsqueletoX = valor;/* printf("%f", valor);*/
+			}
+			else  if (cont == 6 && signo)
+			{
+				valor = valor*(-1);
+				KeyFrame_1[aux].movEsqueletoY = valor; /*printf("%f", valor);*/
+				aux++;
+				cont = 0;
+				i = 0;
+				signo = false;
+				continue;
+			}
+			else  if (cont == 6)
+			{
+				KeyFrame_1[aux].movEsqueletoY = valor; /*printf("%f", valor);*/
+				aux++;
+				cont = 0;
+				i = 0;
+				continue;
+			}
+
+
+			//printf("\n hola");
+			i = 0;
+			cont++;
+
+		}
+		else
+		{
+			i++; //printf("in%din", i);
+		}
+
+		/*KeyFrame[i]. =*/
+
+
+
+		//caracter = fgetc(flujo);
+		//printf("%c", caracter);
+	}
+	FrameIndex_1 = aux;
+	//printf("contador:%d:", aux);
+
+	fclose(flujo);
+	printf(" \n\n Se ha leido el archivo correctamente ");
+
 }
+
+//void saveFrame(void)
+//{
+//
+//	printf("frameindex %d\n", FrameIndex); //EscrituraArchivo(FrameIndex);
+//
+//	KeyFrame[FrameIndex].movCabezaX = movCabezaX; EscrituraArchivo(movCabezaX); //EscrituraArchivo(movCabezaX);
+//	KeyFrame[FrameIndex].movCabezay = movCabezay; EscrituraArchivo(movCabezay); //EscrituraArchivo(movCabezay);
+//	KeyFrame[FrameIndex].girarCabezaX = girarCabezaX; EscrituraArchivo(girarCabezaX); //EscrituraArchivo(girarCabeza);
+//	KeyFrame[FrameIndex].girarCabezaY = girarCabezaY; EscrituraArchivo(girarCabezaY);
+//
+//	FrameIndex++; //EscrituraArchivo(FrameIndex);
+//}
+
+//void saveFrame(void)
+//{
+//
+//	printf("frameindex %d\n", FrameIndex_1);
+//
+//	KeyFrame_1[FrameIndex_1].giroOjoX = giroOjoX; EscrituraArchivo(giroOjoX);
+//	KeyFrame_1[FrameIndex_1].giroOjoY = giroOjoY; EscrituraArchivo(giroOjoY);
+//	KeyFrame_1[FrameIndex_1].giroOjoZ = giroOjoZ; EscrituraArchivo(giroOjoZ);
+//	KeyFrame_1[FrameIndex_1].rotEsqueletoY = rotEsqueletoY; EscrituraArchivo(rotEsqueletoY);
+//	KeyFrame_1[FrameIndex_1].EscalamientoEsqueleto = EscalamientoEsqueleto; EscrituraArchivo(EscalamientoEsqueleto);
+//	KeyFrame_1[FrameIndex_1].movEsqueletoX = movEsqueletoX; EscrituraArchivo(movEsqueletoX);
+//	KeyFrame_1[FrameIndex_1].movEsqueletoY = movEsqueletoY; EscrituraArchivo(movEsqueletoY);
+//
+//
+//	FrameIndex_1++;
+//}
 
 void resetElements(void)
 {
@@ -298,6 +470,18 @@ void resetElements(void)
 	movCabezay = KeyFrame[0].movCabezay;
 	girarCabezaX = KeyFrame[0].girarCabezaX;
 	girarCabezaY = KeyFrame[0].girarCabezaY;
+
+}
+
+void resetElementsOjo(void) // Ojo reset
+{
+	giroOjoX = KeyFrame_1[0].giroOjoX;
+	giroOjoY = KeyFrame_1[0].giroOjoY;
+	giroOjoZ = KeyFrame_1[0].giroOjoZ;
+	rotEsqueletoY = KeyFrame_1[0].rotEsqueletoY;
+	EscalamientoEsqueleto = KeyFrame_1[0].EscalamientoEsqueleto;
+	movEsqueletoX = KeyFrame_1[0].movEsqueletoX;
+	movEsqueletoY = KeyFrame_1[0].movEsqueletoY;
 
 }
 
@@ -310,6 +494,17 @@ void interpolation(void)
 
 }
 
+void interpolationOjo(void)
+{
+	KeyFrame_1[playIndex_1].incgiroOjoX = (KeyFrame_1[playIndex_1 + 1].giroOjoX - KeyFrame_1[playIndex_1].giroOjoX) / i_max_steps_1;
+	KeyFrame_1[playIndex_1].incgiroOjoY = (KeyFrame_1[playIndex_1 + 1].giroOjoY - KeyFrame_1[playIndex_1].giroOjoY) / i_max_steps_1;
+	KeyFrame_1[playIndex_1].incgiroOjoZ = (KeyFrame_1[playIndex_1 + 1].giroOjoZ - KeyFrame_1[playIndex_1].giroOjoZ) / i_max_steps_1;
+	KeyFrame_1[playIndex_1].incrotEsqueletoY = (KeyFrame_1[playIndex_1 + 1].rotEsqueletoY - KeyFrame_1[playIndex_1].rotEsqueletoY) / i_max_steps_1;
+	KeyFrame_1[playIndex_1].incEscalamientoEsqueleto = (KeyFrame_1[playIndex_1 + 1].EscalamientoEsqueleto - KeyFrame_1[playIndex_1].EscalamientoEsqueleto) / i_max_steps_1;
+	KeyFrame_1[playIndex_1].incmovEsqueletoX = (KeyFrame_1[playIndex_1 + 1].movEsqueletoX - KeyFrame_1[playIndex_1].movEsqueletoX) / i_max_steps_1;
+	KeyFrame_1[playIndex_1].incmovEsqueletoY = (KeyFrame_1[playIndex_1 + 1].movEsqueletoY - KeyFrame_1[playIndex_1].movEsqueletoY) / i_max_steps_1;
+
+}
 
 
 int const resolución = 101;
@@ -509,6 +704,7 @@ void InitGL(GLvoid)     // Inicializamos parametros
 		Cuerpo_decapitado._3dsLoad("Vcuerpo.3DS");
 
 		LecturaArchivo();
+		LecturaArchivoOjo();
 
 		objCamera.Position_Camera(10, 2.5f, 13, 10, 2.5f, 10, 0, 1, 0);
 		objCamera.UpDown_Camera(0.25);
@@ -1250,20 +1446,26 @@ void Cuarto_Siniestro(void)
 	glPushMatrix();
 	//// Modelo ojo
 	glTranslatef(0, 1, 0);
+	glRotatef(giroOjoX + 0, 1, 0, 0);
+	glRotatef(giroOjoY + 0, 0, 1, 0);
+	glRotatef(giroOjoZ + 0, 0, 0, 1);
 	////glRotatef(90, 0, 1, 0);
 	////glScalef(0.001, 0.001, 0.001);
 	//glDisable(GL_COLOR_MATERIAL);
 	//glScalef(0.1, 0.1, 0.1);
 	//Craneo.GLrender(NULL, _SHADED, 1.0);
-	fig5.esfera(1, 20, 10, Ojo.GLindex);
+	fig5.esfera(1, 40, 40, Ojo.GLindex);
 
 	glPopMatrix();
 	glPushMatrix();
 	glPopMatrix();
 	glPushMatrix();
+	// Esqueleto
 	glTranslatef(-2.5, 2.2, -2.5);
 	glRotatef(90, 1, 0, 0);
-	glScalef(0.05, 0.05, 0.05);
+	glRotatef(rotEsqueletoY + 0, 0, 1, 0);
+	glTranslatef(movEsqueletoX + 0.0, movEsqueletoY + 0.0, 0.0);
+	glScalef(0.05 + EscalamientoEsqueleto, 0.05 + EscalamientoEsqueleto, 0.05 + EscalamientoEsqueleto);
 	glDisable(GL_COLOR_MATERIAL);
 	Esqueleto.GLrender(NULL, _SHADED, 1.0);
 	glPopMatrix();
@@ -1852,6 +2054,43 @@ void animacion()
 
 	}
 
+	//Movimiento del ojo
+	if (play_1)
+	{
+
+		if (i_curr_steps_1 >= i_max_steps_1) //end of animation between frames?
+		{
+			playIndex_1++;
+			if (playIndex_1>FrameIndex_1 - 2)	//end of total animation?
+			{
+				printf("termina anim ojo\n");
+				playIndex_1 = 0;
+				play_1 = false;
+			}
+			else //Next frame interpolations
+			{
+				i_curr_steps_1 = 0; //Reset counter
+									//Interpolation
+				interpolationOjo();
+
+			}
+		}
+		else
+		{
+			//Draw animation
+			giroOjoX += KeyFrame_1[playIndex_1].incgiroOjoX;
+			giroOjoY += KeyFrame_1[playIndex_1].incgiroOjoY;
+			giroOjoZ += KeyFrame_1[playIndex_1].incgiroOjoZ;
+			rotEsqueletoY += KeyFrame_1[playIndex_1].incrotEsqueletoY;
+			EscalamientoEsqueleto += KeyFrame_1[playIndex_1].incEscalamientoEsqueleto;
+			movEsqueletoX += KeyFrame_1[playIndex_1].incmovEsqueletoX;
+			movEsqueletoY += KeyFrame_1[playIndex_1].incmovEsqueletoY;
+
+			i_curr_steps_1++;
+		}
+
+	}
+
 	glutPostRedisplay();
 }
 
@@ -1903,56 +2142,137 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 		g_fanimacion ^= true; //Activamos/desactivamos la animacíon
 		break;
 
+	//case 'k':		//
+	//case 'K':
+	//	if (FrameIndex<MAX_FRAMES)
+	//	{
+	//		saveFrame();
+	//	}
+
+	//	break;
+
 	case 'l':
 	case 'L':
-		if (play == false && (FrameIndex>1))
+		//if (play == false && (FrameIndex>1))
+		//{
+
+		//	resetElements();
+		//	//First Interpolation				
+		//	interpolation();
+
+		//	play = true;
+		//	playIndex = 0;
+		//	i_curr_steps = 0;
+		//}
+		//else
+		//{
+		//	play = false;
+		//}
+		if (play_1 == false && (FrameIndex_1>1))
 		{
 
-			resetElements();
+			resetElementsOjo();
 			//First Interpolation				
-			interpolation();
+			interpolationOjo();
 
-			play = true;
-			playIndex = 0;
-			i_curr_steps = 0;
+			play_1 = true;
+			playIndex_1 = 0;
+			i_curr_steps_1 = 0;
 		}
 		else
 		{
-			play = false;
+			play_1 = false;
 		}
+
 		break;
 
 	case 'z':
-		movCabezaX += 0.05;
+		giroOjoX += 0.5;
 		break;
 
 	case 'Z':
-		movCabezaX -= 0.05;
+		giroOjoX -= 0.5;
 		break;
 
 	case 'x':
-		movCabezay += 0.05;
+		giroOjoY += 0.5;
 		break;
 
 	case 'X':
-		movCabezay -= 0.05;
+		giroOjoY -= 0.5;
 		break;
 
 	case 'c':
-		girarCabezaX += 0.1;
+		giroOjoZ += 0.5;
 		break;
 
 	case 'C':
-		girarCabezaX -= 0.1;
+		giroOjoZ -= 0.5;
 		break;
 
 	case 'v':
-		girarCabezaY += 0.1;
+		rotEsqueletoY += 2;
 		break;
 
 	case 'V':
-		girarCabezaY -= 0.1;
+		rotEsqueletoY -= 2;
 		break;
+
+	case 'b':
+		EscalamientoEsqueleto += 0.001;
+		break;
+
+	case 'B':
+		EscalamientoEsqueleto -= 0.001;
+		break;
+
+	case 'n':
+		movEsqueletoX += 0.5;
+		break;
+
+	case 'N':
+		movEsqueletoX -= 0.5;
+		break;
+
+	case 'm':
+		movEsqueletoY += 0.5;
+		break;
+
+	case 'M':
+		movEsqueletoY -= 0.5;
+		break;
+
+	//case 'z':
+	//	movCabezaX += 0.05;
+	//	break;
+
+	//case 'Z':
+	//	movCabezaX -= 0.05;
+	//	break;
+
+	//case 'x':
+	//	movCabezay += 0.05;
+	//	break;
+
+	//case 'X':
+	//	movCabezay -= 0.05;
+	//	break;
+
+	//case 'c':
+	//	girarCabezaX += 0.1;
+	//	break;
+
+	//case 'C':
+	//	girarCabezaX -= 0.1;
+	//	break;
+
+	//case 'v':
+	//	girarCabezaY += 0.1;
+	//	break;
+
+	//case 'V':
+	//	girarCabezaY -= 0.1;
+	//	break;
 
 	case 27:        // Cuando Esc es presionado...
 		exit(0);   // Salimos del programa
