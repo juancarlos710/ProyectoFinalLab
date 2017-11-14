@@ -18,6 +18,7 @@
 #   pragma comment( lib, "legacy_stdio_definitions.lib" )
 #endif
 
+float lroty=0, lrotx=0, lrotz = 0;
 CCamera objCamera;
 GLfloat g_lookupdown = 0.0f;    // Look Position In The Z-Axis (NEW) 
 
@@ -69,7 +70,9 @@ CTexture Ladrillos;
 CTexture Frente;
 
 CFiguras Torre;
+CTexture T_Piramide;
 
+CFiguras Priramide;
 
 CFiguras Pared;
 CFiguras Suelo;
@@ -89,6 +92,16 @@ CFiguras fig7; //Para el monito
 			   //Figuras de 3D Studio
 
 CModel femur;
+
+CModel ltorso;
+CModel lantebrazod;
+CModel lantebrazoi;
+CModel lbrazod;
+CModel lbrazoi;
+CModel lpiernad;
+CModel lpiernai;
+CModel lantepiernad;
+CModel lantepiernai;
 
 //CModel Arbol_Muerto;
 
@@ -237,7 +250,20 @@ void InitGL(GLvoid)     // Inicializamos parametros
 		Frente.BuildGLTexture();
 		Frente.ReleaseImage();
 
+		T_Piramide.LoadTGA("T_Piramide.tga");
+		T_Piramide.BuildGLTexture();
+		T_Piramide.ReleaseImage();
 
+		lantebrazod._3dsLoad("lantebrazod.3ds");
+		lantebrazoi._3dsLoad("lantebrazoi.3ds");
+		lbrazod._3dsLoad("lbrazod.3ds");
+		lbrazoi._3dsLoad("lbrazoi.3ds");
+		lpiernad._3dsLoad("lpiernad.3ds");
+		lpiernai._3dsLoad("lpiernai.3ds");
+		lantepiernad._3dsLoad("lantepiernad.3ds");
+		lantepiernai._3dsLoad("lantepiernai.3ds");
+		ltorso._3dsLoad("ltorso.3ds");
+		
 		//Carga de Figuras
 		femur._3dsLoad("FEMUR.3ds");
 		//Arbol_Muerto._3dsLoad("Arbol_Muerto.3ds");
@@ -249,7 +275,7 @@ void InitGL(GLvoid)     // Inicializamos parametros
 
 
 		objCamera.Position_Camera(10, 2.5f, 13, 10, 2.5f, 10, 0, 1, 0);
-	
+		objCamera.UpDown_Camera(0.25);
 }
 
 void pintaTexto(float x, float y, float z, void *font, char *string)
@@ -262,6 +288,47 @@ void pintaTexto(float x, float y, float z, void *font, char *string)
 	{
 		glutBitmapCharacter(font, *c); //imprime
 	}
+}
+
+void Piramide_Sacrificios ( void )
+{
+
+	glPushMatrix();
+	glPopMatrix();
+	glPushMatrix();
+
+		Priramide.piramide(9.9, 9.0, 1.0, T_Piramide.GLindex);
+		glTranslatef(0.0, 1.0, 0.0);
+		glPushMatrix();
+			Priramide.piramide(8.7, 8.0, 1.0, T_Piramide.GLindex);
+			glTranslatef(0.0, 1.0, 0.0);
+			glPushMatrix();
+				Priramide.piramide(7.6, 7.0, 1.0, T_Piramide.GLindex);
+				glTranslatef(0.0, 1.0, 0.0);
+				glPushMatrix();
+					Priramide.piramide(6.5, 6.0, 1.0, T_Piramide.GLindex);
+					glTranslatef(0.0, 1.0, 0.0);
+					glPushMatrix();
+						Priramide.piramide(5.5, 5.0, 1.0, T_Piramide.GLindex);
+						glTranslatef(0.0, 1.0, 0.0);
+						glPushMatrix();
+							Priramide.piramide(4.4, 4.0, 1.0, T_Piramide.GLindex);
+							glTranslatef(0.0, 1.0, 0.0);
+							glPushMatrix();
+								Priramide.piramide(3.35, 3.0, 1.0, T_Piramide.GLindex);
+								glTranslatef(0.0, 1.0, 0.0);
+								glPushMatrix();
+									Priramide.piramide(2.25, 2.0, 1.0, T_Piramide.GLindex);
+									glTranslatef(0.0, 1.0, 0.0);
+								glPopMatrix();
+							glPopMatrix();
+						glPopMatrix();
+					glPopMatrix();
+				glPopMatrix();
+			glPopMatrix();
+		glPopMatrix();
+	glPopMatrix();
+
 }
 
 void cadena1(void) {
@@ -802,8 +869,72 @@ void display(void)   // Creamos la funcion donde se dibuja
 	gluLookAt(objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z,
 		objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
 		objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
-	//Castillo
 
+	glPushMatrix();
+	glDisable(GL_COLOR_MATERIAL);
+	glTranslatef(objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+	glRotatef(-lrotx, 1, 0, 0);
+	glRotatef(lroty, 0, 1, 0);
+	glTranslatef(0,-1.4,-2.5);
+	glRotatef(180,0,1,0);
+		ltorso.GLrender(NULL, _SHADED, 1.0);
+		glPushMatrix();
+			glTranslatef(-0.193, +0.45, 0);
+			glRotatef(45, 0, 0, 1);
+			glTranslatef(+0.193, -0.45, 0);
+			lbrazod.GLrender(NULL, _SHADED, 1.0);
+			glTranslatef(-0.5, +0.45, 0);
+			glRotatef(-45, 0, 0, 1);
+			glTranslatef(0.5, -0.45, 0);
+			lantebrazod.GLrender(NULL, _SHADED, 1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(+0.15, 0.45, 0);
+			glRotatef(45, 0, 0, 1);
+			glTranslatef(-0.15, -0.45, 0);
+			lbrazoi.GLrender(NULL, _SHADED, 1.0);
+			glTranslatef(+0.43, +0.40, 0);
+			glRotatef(+45, 0, 0, 1);
+			glTranslatef(-0.45, -0.41, 0);
+			lantebrazoi.GLrender(NULL, _SHADED, 1.0);
+		glPopMatrix();
+		
+		
+		glPushMatrix();
+			glTranslatef(0, 0.1, 0);
+			glRotatef(-40, 1, 0, 0);
+			glTranslatef(0, -0.1, 0);
+			lpiernad.GLrender(NULL, _SHADED, 1.0);
+			glTranslatef(0, -0.4, 0);
+			glRotatef(-40, 1, 0, 0);
+			glTranslatef(0, 0.4, 0);
+			lantepiernad.GLrender(NULL, _SHADED, 1.0);
+
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(0, +0.1, 0);
+			glRotatef(30, 1, 0, 0);
+			glTranslatef(0, -0.1, 0);
+			lpiernai.GLrender(NULL, _SHADED, 1.0);
+			glTranslatef(0,-0.4,0);
+			glRotatef(60,1,0,0);
+			glTranslatef(0,0.5,0);
+			lantepiernai.GLrender(NULL, _SHADED, 1.0);
+		glPopMatrix();
+	glEnable(GL_COLOR_MATERIAL);
+	glPopMatrix();
+
+	//Castillo
+	glPushMatrix();
+	
+		glPushMatrix();
+			glTranslatef(9.95, 3.5, 40.0);
+			glScalef(2, 1.8, 2);
+			Piramide_Sacrificios();
+		glPopMatrix();
+
+			glTranslatef(10.0, 2.5, -40.0);
 		for (j = 0; j < 4; j++) {
 			glPushMatrix();
 				glColor3f(1, 1, 1);
@@ -889,7 +1020,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 					glBindTexture(GL_TEXTURE_2D, Ladrillos.GLindex);
 				}
 					glBegin(GL_QUADS);
-							glNormal3f(0, 0, -1);
+							glNormal3f(0, 0, 1);
 							glTexCoord2d(0, 0); glVertex3f(-17.5, 0, 0);
 							glTexCoord2d(0, 1);	glVertex3f(-17.5,12.1, 0);
 							glTexCoord2d(1, 1);	glVertex3f(17.5,12.1, 0);
@@ -933,7 +1064,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 			glBindTexture(GL_TEXTURE_2D, Muro_Huesos.GLindex);
 			glBegin(GL_QUADS);
-			glNormal3f(0, 1, 0);
+			glNormal3f(0, -1, 0);
 			glTexCoord2d(0, 0); glVertex3f(-17.5, 12.01, -17.5);
 			glTexCoord2d(0, 1);	glVertex3f(-17.5, 12.01, 17.5);
 			glTexCoord2d(1, 1);	glVertex3f(17.5, 12.01, 17.5);
@@ -942,252 +1073,259 @@ void display(void)   // Creamos la funcion donde se dibuja
 			//Torre.prisma(12, 35, 35, Ladrillos.GLindex);
 		glPopMatrix();
 	
+		glPushMatrix();
 
-	//GS
-	glPushMatrix();
-		glEnable(GL_COLOR_MATERIAL);
-		glDisable(GL_LIGHTING);
-		glEnable(GL_TEXTURE_2D);
-		glColor3f(1,1,1);
-		glBindTexture(GL_TEXTURE_2D, Pasto.GLindex);
-			glBegin(GL_TRIANGLE_FAN);
-			glNormal3f(0, 1, 0);
-			glTexCoord2f(0.5,0.5); glVertex3f(0, 0, 0);
-			for (j = 0; j < resolución; j++) {
+		//GS
+		glPushMatrix();
+			glEnable(GL_COLOR_MATERIAL);
+			glDisable(GL_LIGHTING);
+			glEnable(GL_TEXTURE_2D);
+			glColor3f(1,1,1);
+			glBindTexture(GL_TEXTURE_2D, Pasto.GLindex);
+				glBegin(GL_TRIANGLE_FAN);
+				glNormal3f(0, 1, 0);
+				glTexCoord2f(0.5,0.5); glVertex3f(0, 0, 0);
+				for (j = 0; j < resolución; j++) {
 
-				glTexCoord2f(cos(d0*j)*20+0.5,sin(d0*j)*20+0.5); glVertex3f(circulo[0][j][0], circulo[0][j][1], circulo[0][j][2]);
+					glTexCoord2f(cos(d0*j)*20+0.5,sin(d0*j)*20+0.5); glVertex3f(circulo[0][j][0], circulo[0][j][1], circulo[0][j][2]);
+				}
+				glTexCoord2f(cos(0)*20+0.5, sin(0)*20+0.5); glVertex3f(circulo[0][0][0], circulo[0][0][1], circulo[0][0][2]);
+				glEnd();
+
+		//Sd
+		glColor3f(1, 1, 1);
+		glBindTexture(GL_TEXTURE_2D, text1.GLindex);
+		for (j = 0; j < resolución; j++) {
+			glBegin(GL_QUAD_STRIP);
+
+			glTexCoord2f(j*4/(float)resolución,0);  
+			glVertex3f(circulo[0][j][0], circulo[0][j][1], circulo[0][j][2]);
+			glTexCoord2f((j+1)*4 /(float)resolución, 0);
+			glVertex3f(circulo[0][j + 1][0], circulo[0][j + 1][1], circulo[0][j + 1][2]);
+			for (i = 0; i < resolución/4 +1; i++) {
+				glTexCoord2f((j)*4 / (float)resolución, (i*4+1)/(float)resolución);
+				glVertex3f(circulo[1][i][0] * cos(d0*(j)) + circulo[1][i][2] * sin(d0*(j)),
+					circulo[1][i][1],
+					circulo[1][i][0] * sin(d0*(j) + circulo[1][i][2] * cos(d0*(j))));
+				glTexCoord2f((j + 1)*4 / (float)resolución, (i*4 + 1)/ (float)resolución);
+				glVertex3f(circulo[1][i][0]*cos(d0*(j+1))+ circulo[1][i][2] * sin(d0*(j + 1)),
+					circulo[1][i][1],
+					circulo[1][i][0]*sin(d0*(j+1)+ circulo[1][i][2] * cos(d0*(j + 1))));
 			}
-			glTexCoord2f(cos(0)*20+0.5, sin(0)*20+0.5); glVertex3f(circulo[0][0][0], circulo[0][0][1], circulo[0][0][2]);
+			glEnd();
+			glBegin(GL_TRIANGLES);
+			i =resolución / 4 ;
+			glTexCoord2f((j)*4 / (float)resolución, (i*2) / (float)resolución);
+				glVertex3f(circulo[1][i][0] * cos(d0*(j)) + circulo[1][i][2] * sin(d0*(j)),
+					circulo[1][i][1],
+					circulo[1][i][0] * sin(d0*(j)+circulo[1][i][2] * cos(d0*(j))));
+				glTexCoord2f((j+1)*4 / (float)resolución, (i*2) / (float)resolución);
+				glVertex3f(circulo[1][i][0] * cos(d0*(j + 1)) + circulo[1][i][2] * sin(d0*(j + 1)),
+					circulo[1][i][1],
+					circulo[1][i][0] * sin(d0*(j + 1) + circulo[1][i][2] * cos(d0*(j + 1))));
+				glTexCoord2f(0.5,1);
+				glVertex3f(0,radio,0);
 			glEnd();
 
-	//Sd
-	glColor3f(1, 1, 1);
-	glBindTexture(GL_TEXTURE_2D, text1.GLindex);
-	for (j = 0; j < resolución; j++) {
-		glBegin(GL_QUAD_STRIP);
-
-		glTexCoord2f(j*4/(float)resolución,0);  
-		glVertex3f(circulo[0][j][0], circulo[0][j][1], circulo[0][j][2]);
-		glTexCoord2f((j+1)*4 /(float)resolución, 0);
-		glVertex3f(circulo[0][j + 1][0], circulo[0][j + 1][1], circulo[0][j + 1][2]);
-		for (i = 0; i < resolución/4 +1; i++) {
-			glTexCoord2f((j)*4 / (float)resolución, (i*4+1)/(float)resolución);
-			glVertex3f(circulo[1][i][0] * cos(d0*(j)) + circulo[1][i][2] * sin(d0*(j)),
-				circulo[1][i][1],
-				circulo[1][i][0] * sin(d0*(j) + circulo[1][i][2] * cos(d0*(j))));
-			glTexCoord2f((j + 1)*4 / (float)resolución, (i*4 + 1)/ (float)resolución);
-			glVertex3f(circulo[1][i][0]*cos(d0*(j+1))+ circulo[1][i][2] * sin(d0*(j + 1)),
-				circulo[1][i][1],
-				circulo[1][i][0]*sin(d0*(j+1)+ circulo[1][i][2] * cos(d0*(j + 1))));
 		}
-		glEnd();
-		glBegin(GL_TRIANGLES);
-		i =resolución / 4 ;
-		glTexCoord2f((j)*4 / (float)resolución, (i*2) / (float)resolución);
-			glVertex3f(circulo[1][i][0] * cos(d0*(j)) + circulo[1][i][2] * sin(d0*(j)),
-				circulo[1][i][1],
-				circulo[1][i][0] * sin(d0*(j)+circulo[1][i][2] * cos(d0*(j))));
-			glTexCoord2f((j+1)*4 / (float)resolución, (i*2) / (float)resolución);
-			glVertex3f(circulo[1][i][0] * cos(d0*(j + 1)) + circulo[1][i][2] * sin(d0*(j + 1)),
-				circulo[1][i][1],
-				circulo[1][i][0] * sin(d0*(j + 1) + circulo[1][i][2] * cos(d0*(j + 1))));
-			glTexCoord2f(0.5,1);
-			glVertex3f(0,radio,0);
-		glEnd();
-
-	}
-		glEnable(GL_LIGHTING);
-	glPopMatrix();
-
-
-		glPushMatrix();
-		
-		glPushMatrix(); //Mn
-			glDisable(GL_LIGHTING);
-			glTranslatef(0, 150, 0);
-			glRotatef(90,1,0,0);
-			glRotatef(90, 0, 1, 0);
-			fig1.esfera(20.0, 20, 20, Luna.GLindex);
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 
-		//Para que el comando glColor funcione con iluminacion
-		glEnable(GL_COLOR_MATERIAL);
 
-		// Camara de Tortura
-		glPushMatrix();
+			glPushMatrix();
+		
+			glPushMatrix(); //Mn
+				glDisable(GL_LIGHTING);
+				glTranslatef(0, 150, 0);
+				glRotatef(90,1,0,0);
+				glRotatef(90, 0, 1, 0);
+				fig1.esfera(20.0, 20, 20, Luna.GLindex);
+				glEnable(GL_LIGHTING);
+			glPopMatrix();
 
-		// Suelo de Camara
-		//glDisable(GL_LIGHTING);
-		Suelo.prisma(0.25, 10.0, 10.0, Suelo_Tierra.GLindex);
-		//glEnable(GL_LIGHTING);
-		glPushMatrix();
+			//Para que el comando glColor funcione con iluminacion
+			glEnable(GL_COLOR_MATERIAL);
 
-		glTranslatef(0.0, 0.125, 0.0);
+			// Camara de Tortura
+			glPushMatrix();
 
-		glPushMatrix();
-		// Muro trasero
-		glTranslatef(0.0, 2.0, -4.875);
-		//glDisable(GL_LIGHTING);
-		Pared.prisma(4.0, 10.0, 0.25, Muro_Roca.GLindex);
-		//glEnable(GL_LIGHTING);
+			// Suelo de Camara
+			//glDisable(GL_LIGHTING);
+			Suelo.prisma(0.25, 10.0, 10.0, Suelo_Tierra.GLindex);
+			//glEnable(GL_LIGHTING);
+			glPushMatrix();
 
+			glTranslatef(0.0, 0.125, 0.0);
+
+			glPushMatrix();
+			// Muro trasero
+			glTranslatef(0.0, 2.0, -4.875);
+			//glDisable(GL_LIGHTING);
+			Pared.prisma(4.0, 10.0, 0.25, Muro_Roca.GLindex);
+			//glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// Muro derecho
+			glTranslatef(4.875, 2.0, 0.0);
+			//glDisable(GL_LIGHTING);
+			Pared.prisma(4.0, 0.25, 9.5, Muro_Roca.GLindex);
+			//glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// Muro izquierdo
+			glTranslatef(-4.875, 2.0, 0.0);
+			//glDisable(GL_LIGHTING);
+			Pared.prisma(4.0, 0.25, 9.5, Muro_Roca.GLindex);
+			//glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// Primera parte del Muro de enfrente
+			glTranslatef(-2.875, 2.0, 4.875);
+			//glDisable(GL_LIGHTING);
+			Pared.prisma(4.0, 4.25, 0.25, Muro_Roca.GLindex);
+			//glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// Segunda parte del Muro de enfrente
+			glTranslatef(2.875, 2.0, 4.875);
+			//glDisable(GL_LIGHTING);
+			Pared.prisma(4.0, 4.25, 0.25, Muro_Roca.GLindex);
+			//glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// Tercera parte del Muro de enfrente arriba del la puerta
+			glTranslatef(0.0, 3.3, 4.875);
+			glDisable(GL_LIGHTING);
+			Pared.prisma(1.4, 1.5, 0.25, Muro_Roca.GLindex);
+			glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// Puerta de la camara de tortura
+			glTranslatef(-0.75, 1.3, 4.875);
+			glRotatef(45, 0, 1, 0); // giro de la puerta
+			glTranslatef(0.75, 0.0, 0.0);
+			glDisable(GL_LIGHTING);
+			fig2.prisma(2.6, 1.5, 0.0, Puerta_Madera.GLindex);
+			glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+			// techo camara de tortura
+			//glDisable(GL_LIGHTING);
+			glTranslatef(0.0, 4.0, 0.0);
+			Techo.prisma(0.25, 10.0, 10.0, Muro_Huesos.GLindex);
+			//glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+			// Detalles Suelo
+			glPushMatrix();
+
+			// Sangre
+			glTranslatef(0.0, 0.001, 0.0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			Techo.prisma(0.0, 10.0, 10.0, Sangre_2.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			// cadenas
+			glTranslatef(0.0, 2.625, 0.0);
+			for (size_t i = 0; i < 5; i++)
+			{
+
+				cadena1();
+				glTranslatef(0.0, -0.2, 0.0);
+				cadena2();
+				glTranslatef(0.0, -0.2, 0.0);
+
+			}
+
+			glPopMatrix();
+
+			glPushMatrix();
+			//Para que el femur conserve sus colores
+			//glDisable(GL_COLOR_MATERIAL);
+			glTranslatef(1, 1, 1);
+			glScalef(0.001, 0.001, 0.001);
+			femur.GLrender(NULL, _SHADED, 1.0);
+
+			glPopMatrix();
+
+			glPushMatrix();
+			//Para que el femur conserve sus colores
+			//glDisable(GL_COLOR_MATERIAL);
+			glTranslatef(1, 1, 1);
+			glRotatef(90, 0, 1, 0);
+			glScalef(0.001, 0.001, 0.001);
+			femur.GLrender(NULL, _SHADED, 1.0);
+
+			glPopMatrix();
+
+			glPopMatrix();
+
+			// Muebles de tortura
+
+			glPushMatrix();
+			glPopMatrix();
+			glPushMatrix();
+
+			glTranslatef(2.0, 0.125, -2.0);
+			Partidor_de_Humanos();
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+			glTranslatef(-3.5, 0.225, -2.5);
+			glRotatef(90, 0, 1, 0);
+			Rueda_Tortura();
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+			glTranslatef(2.5, 0.225, 2.5);
+			Asiento_Tortura();
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+			glTranslatef(-2.5, 0.225, 2.5);
+			Guillotina();
+
+			glPopMatrix();
+
+			glPopMatrix();
+
+			glPopMatrix();
+
+		
+
+			glPopMatrix();
+		
 		glPopMatrix();
+	glPopMatrix();
 
-		glPushMatrix();
-		// Muro derecho
-		glTranslatef(4.875, 2.0, 0.0);
-		//glDisable(GL_LIGHTING);
-		Pared.prisma(4.0, 0.25, 9.5, Muro_Roca.GLindex);
-		//glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		// Muro izquierdo
-		glTranslatef(-4.875, 2.0, 0.0);
-		//glDisable(GL_LIGHTING);
-		Pared.prisma(4.0, 0.25, 9.5, Muro_Roca.GLindex);
-		//glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		// Primera parte del Muro de enfrente
-		glTranslatef(-2.875, 2.0, 4.875);
-		//glDisable(GL_LIGHTING);
-		Pared.prisma(4.0, 4.25, 0.25, Muro_Roca.GLindex);
-		//glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		// Segunda parte del Muro de enfrente
-		glTranslatef(2.875, 2.0, 4.875);
-		//glDisable(GL_LIGHTING);
-		Pared.prisma(4.0, 4.25, 0.25, Muro_Roca.GLindex);
-		//glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		// Tercera parte del Muro de enfrente arriba del la puerta
-		glTranslatef(0.0, 3.3, 4.875);
-		glDisable(GL_LIGHTING);
-		Pared.prisma(1.4, 1.5, 0.25, Muro_Roca.GLindex);
-		glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		// Puerta de la camara de tortura
-		glTranslatef(-0.75, 1.3, 4.875);
-		glRotatef(45, 0, 1, 0); // giro de la puerta
-		glTranslatef(0.75, 0.0, 0.0);
-		glDisable(GL_LIGHTING);
-		fig2.prisma(2.6, 1.5, 0.0, Puerta_Madera.GLindex);
-		glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		glPushMatrix();
-
-		// techo camara de tortura
-		//glDisable(GL_LIGHTING);
-		glTranslatef(0.0, 4.0, 0.0);
-		Techo.prisma(0.25, 10.0, 10.0, Muro_Huesos.GLindex);
-		//glEnable(GL_LIGHTING);
-
-		glPopMatrix();
-
-		// Detalles Suelo
-		glPushMatrix();
-
-		// Sangre
-		glTranslatef(0.0, 0.001, 0.0);
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_GREATER, 0.1);
-		glDisable(GL_LIGHTING);
-		Techo.prisma(0.0, 10.0, 10.0, Sangre_2.GLindex);
-		glEnable(GL_LIGHTING);
-		glDisable(GL_ALPHA_TEST);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		// cadenas
-		glTranslatef(0.0, 2.625, 0.0);
-		for (size_t i = 0; i < 5; i++)
-		{
-
-			cadena1();
-			glTranslatef(0.0, -0.2, 0.0);
-			cadena2();
-			glTranslatef(0.0, -0.2, 0.0);
-
-		}
-
-		glPopMatrix();
-
-		glPushMatrix();
-		//Para que el femur conserve sus colores
-		//glDisable(GL_COLOR_MATERIAL);
-		glTranslatef(1, 1, 1);
-		glScalef(0.001, 0.001, 0.001);
-		femur.GLrender(NULL, _SHADED, 1.0);
-
-		glPopMatrix();
-
-		glPushMatrix();
-		//Para que el femur conserve sus colores
-		//glDisable(GL_COLOR_MATERIAL);
-		glTranslatef(1, 1, 1);
-		glRotatef(90, 0, 1, 0);
-		glScalef(0.001, 0.001, 0.001);
-		femur.GLrender(NULL, _SHADED, 1.0);
-
-		glPopMatrix();
-
-		glPopMatrix();
-
-		// Muebles de tortura
-
-		glPushMatrix();
-		glPopMatrix();
-		glPushMatrix();
-
-		glTranslatef(2.0, 0.125, -2.0);
-		Partidor_de_Humanos();
-
-		glPopMatrix();
-
-		glPushMatrix();
-
-		glTranslatef(-3.5, 0.225, -2.5);
-		glRotatef(90, 0, 1, 0);
-		Rueda_Tortura();
-
-		glPopMatrix();
-
-		glPushMatrix();
-
-		glTranslatef(2.5, 0.225, 2.5);
-		Asiento_Tortura();
-
-		glPopMatrix();
-
-		glPushMatrix();
-
-		glTranslatef(-2.5, 0.225, 2.5);
-		Guillotina();
-
-		glPopMatrix();
-
-		glPopMatrix();
-
-		glPopMatrix();
-		glPopMatrix();
-	
 
 	glutSwapBuffers();
 
@@ -1289,10 +1427,12 @@ void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas espe
 
 	case GLUT_KEY_LEFT:
 		objCamera.Rotate_View(-CAMERASPEED);
+		lroty +=4.0f;
 		break;
 
 	case GLUT_KEY_RIGHT:
 		objCamera.Rotate_View(CAMERASPEED);
+		lroty -= 4.0;
 		break;
 
 	default:
