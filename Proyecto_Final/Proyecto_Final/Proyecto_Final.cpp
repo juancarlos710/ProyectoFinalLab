@@ -175,7 +175,7 @@ float giroOjoX = 0.0, giroOjoY = 0.0, giroOjoZ = 0.0; //para el Ojo
 float rotEsqueletoY = 0.0, EscalamientoEsqueleto = 0.0, movEsqueletoX = 0.0, movEsqueletoY = 0.0; // para el esqueleto
 
 																								  //#define MAX_FRAMES 25
-int i_max_steps_1 = 8;
+int i_max_steps_1 = 20;
 int i_curr_steps_1 = 0;
 
 typedef struct _frame_1
@@ -2266,8 +2266,8 @@ void animacion()
 		{
 			if (!Alineacion3) {
 
-				PlaySound(TEXT("Grito_Hombre_Terror.wav"), NULL, SND_ASYNC | SND_LOOP);
-				PlaySound(TEXT("Grito_Hombre_Terror.wav"), NULL, SND_ASYNC | NULL);
+				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | SND_LOOP);
+				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | NULL);
 				Alineacion3 = true;
 
 			}
@@ -2281,16 +2281,32 @@ void animacion()
 		{
 			aplastando -= 0.01;
 		}
+		else if (contador <= 600)
+		{
+			if (!Alineacion4) {
+
+				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | SND_LOOP);
+				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | NULL);
+				Alineacion4 = true;
+
+			}
+		}
+		else
+		{
+
+			aplastando = 1.0;
+
+		}
 
 
 		contador++;
 	}
 
 	//
-printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
-		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
-		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
-		printf("monito x = %g", lroty);
+//printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+//		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
+//		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
+//		printf("monito x = %g", lroty);
 	glutPostRedisplay();
 }
 
