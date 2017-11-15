@@ -121,14 +121,28 @@ CModel Esqueleto;
 CModel Cabeza_decapitada;
 CModel Cuerpo_decapitado;
 
+int contador = 0;
+
 //Animación del coche
 float movKit = 0.0;
 float movCuchilla = 0.0;
+
+float aplastando = 1.0;
+
 //float movCabezaX = 0.0, movCabezay = 0.0, girarCabeza = 0.0;
 
 bool g_fanimacion = false;
 bool ActivacionCuchilla = true;
 bool ActivacionCabeza = false;
+bool animacionOjo = false;
+bool PrimeraActivacion = true;
+
+bool Alineacion1 = false;
+bool Alineacion2 = false;
+bool Alineacion3 = false;
+bool Alineacion4 = false;
+bool Alineacion5 = false;
+bool Alineacion6 = false;
 
 //NEW// Keyframes
 //Variables de dibujo y manipulacion
@@ -161,7 +175,7 @@ float giroOjoX = 0.0, giroOjoY = 0.0, giroOjoZ = 0.0; //para el Ojo
 float rotEsqueletoY = 0.0, EscalamientoEsqueleto = 0.0, movEsqueletoX = 0.0, movEsqueletoY = 0.0; // para el esqueleto
 
 																								  //#define MAX_FRAMES 25
-int i_max_steps_1 = 20;
+int i_max_steps_1 = 8;
 int i_curr_steps_1 = 0;
 
 typedef struct _frame_1
@@ -1670,10 +1684,12 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPushMatrix();
 		glDisable(GL_COLOR_MATERIAL);
 		glTranslatef(objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+		//printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
 		glRotatef(-lrotx, 1, 0, 0);
 		glRotatef(lroty, 0, 1, 0);
 		glTranslatef(0, -1.4, -2.5);
 		glRotatef(180, 0, 1, 0);
+		glScalef(1, aplastando, 1);
 		ltorso.GLrender(NULL, _SHADED, 1.0);
 		glPushMatrix();
 		glTranslatef(-0.193, +0.45, 0);
@@ -2066,6 +2082,9 @@ void animacion()
 				printf("termina anim ojo\n");
 				playIndex_1 = 0;
 				play_1 = false;
+				animacionOjo = false;
+				PrimeraActivacion = false;
+				printf("Activado");
 			}
 			else //Next frame interpolations
 			{
@@ -2091,6 +2110,187 @@ void animacion()
 
 	}
 
+	if (objCamera.mPos.x >= 6 && objCamera.mPos.x <= 13 && objCamera.mPos.z <= -48 && objCamera.mPos.z >= -53.5 && !animacionOjo)
+	{
+		
+		animacionOjo = true;
+
+	}
+	else if (animacionOjo)
+	{
+
+		if (!play_1 && PrimeraActivacion) {
+
+			if (play_1 == false && (FrameIndex_1>1))
+			{
+
+				resetElementsOjo();
+				//First Interpolation				
+				interpolationOjo();
+
+				play_1 = true;
+				playIndex_1 = 0;
+				i_curr_steps_1 = 0;
+			}
+			else
+			{
+				play_1 = false;
+				animacionOjo = false;
+				PrimeraActivacion = false;
+				//printf("Activado");
+			}
+
+		}
+	//	else if (!play_1 && !PrimeraActivacion)
+	//	{
+
+	//		if (Alineacion1)
+	//		{
+	//			printf("completewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+	//		}
+	//		else
+	//		{
+
+	//			objCamera.Position_Camera(10, 5, -48.56, 10, 5, -51.56, 0, 1, 0);
+	//			lroty = 0.0;
+	//			Alineacion1 = true;
+
+	//		}
+
+	//		//objCamera.Move_Camera(-(CAMERASPEED + 0.2));
+
+	//	}
+
+	}
+
+	if (Alineacion1) {
+
+		objCamera.Position_Camera(6.29432, 5.7, -36.2024, 6.47898, 5.7, -33.2081, 0, 1, 0);
+		lroty = -176;
+		Alineacion1 = false;
+		Alineacion2 = true;
+
+	}
+	else  if (Alineacion2)
+	{
+		if (contador <= 77) {
+
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+
+		}
+		else  if (contador <= 79)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 80)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 82)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 83)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 85)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 86)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 88)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 89)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 91)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 92)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 94)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 95)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 97)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 98)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 100)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 101)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 103)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 104)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 106)
+		{
+			objCamera.UpDown_Camera(CAMERASPEED);
+		}
+		else if (contador <= 111)
+		{
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+		}
+		else  if (contador <= 225)
+		{
+			g_lookupdown -= 1.0f;
+		}
+		else if (contador <= 270)
+		{
+			if (!Alineacion3) {
+
+				PlaySound(TEXT("Grito_Hombre_Terror.wav"), NULL, SND_ASYNC | SND_LOOP);
+				PlaySound(TEXT("Grito_Hombre_Terror.wav"), NULL, SND_ASYNC | NULL);
+				Alineacion3 = true;
+
+			}
+				
+		}
+		else if (contador <= 420)
+		{
+			g_lookupdown += 1.0f;
+		}
+		else if (contador <= 520)
+		{
+			aplastando -= 0.01;
+		}
+
+
+		contador++;
+	}
+
+	//
+printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
+		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
+		printf("monito x = %g", lroty);
 	glutPostRedisplay();
 }
 
@@ -2117,6 +2317,13 @@ void reshape(int width, int height)   // Creamos funcion Reshape
 void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 {
 	switch (key) {
+
+	case 'q':   //Movimientos de camara
+	case 'Q':
+		Alineacion1 = true;
+		contador = 0;
+		break;
+
 	case 'w':   //Movimientos de camara
 	case 'W':
 		objCamera.Move_Camera(CAMERASPEED + 0.2);
@@ -2168,21 +2375,23 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 		//{
 		//	play = false;
 		//}
-		if (play_1 == false && (FrameIndex_1>1))
-		{
 
-			resetElementsOjo();
-			//First Interpolation				
-			interpolationOjo();
 
-			play_1 = true;
-			playIndex_1 = 0;
-			i_curr_steps_1 = 0;
-		}
-		else
-		{
-			play_1 = false;
-		}
+		//if (play_1 == false && (FrameIndex_1>1))
+		//{
+
+		//	resetElementsOjo();
+		//	//First Interpolation				
+		//	interpolationOjo();
+
+		//	play_1 = true;
+		//	playIndex_1 = 0;
+		//	i_curr_steps_1 = 0;
+		//}
+		//else
+		//{
+		//	play_1 = false;
+		//}
 
 		break;
 
@@ -2293,6 +2502,7 @@ void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas espe
 
 	case GLUT_KEY_PAGE_DOWN:
 		objCamera.UpDown_Camera(-CAMERASPEED);
+		//printf("%g", CAMERASPEED);
 		break;
 
 	case GLUT_KEY_UP:     // Presionamos tecla ARRIBA...
