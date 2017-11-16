@@ -12,6 +12,11 @@
 #include "Camera.h"
 
 #include "cmodel/CModel.h"
+#include "time.h"
+
+bool recorrido = false, anim3 = false;
+clock_t t1,t2;
+float posx=0, posy=0, posz=0;
 
 //Solo para Visual Studio 2015
 #if (_MSC_VER == 1900)
@@ -19,8 +24,17 @@
 #endif
 
 float lroty=0, lrotx=0, lrotz = 0;
+float lrotbi = 0, lrotbd = 0;
+float lrotai = 0, lrotad = 0;
+float lrotpi = 0, lrotpd = 0;
+float lrotapi = 0, lrotapd = 0;
+
+bool a1 = false;
+
 CCamera objCamera;
 GLfloat g_lookupdown = 0.0f;    // Look Position In The Z-Axis (NEW) 
+
+
 
 int font = (int)GLUT_BITMAP_HELVETICA_18;
 
@@ -107,6 +121,8 @@ CModel lpiernad;
 CModel lpiernai;
 CModel lantepiernad;
 CModel lantepiernai;
+CModel Vinferior;
+CModel Vsuperior;
 
 //CModel Arbol_Muerto;
 CTexture Piedra_Gris;
@@ -539,6 +555,7 @@ float const pi=3.1416;
 
 void InitGL(GLvoid)     // Inicializamos parametros
 {
+	PlaySound(TEXT("ambiente.wav"), NULL, SND_ASYNC | SND_LOOP| SND_NOSTOP);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);				// Negro de fondo	
 	//
@@ -733,6 +750,10 @@ void InitGL(GLvoid)     // Inicializamos parametros
 		Cabeza_decapitada._3dsLoad("Vcabeza.3DS");
 		Cuerpo_decapitado._3dsLoad("Vcuerpo.3DS");
 
+
+		Vsuperior._3dsLoad("V2Superior.3DS");
+		Vinferior._3dsLoad("V2Inferior.3DS");
+
 		LecturaArchivo();
 		LecturaArchivoOjo();
 
@@ -798,15 +819,15 @@ void Piramide_Sacrificios ( void )
 	//glVertex3f(0, 0, 100);
 	//glEnd();
 	// Escaleras
-	glTranslatef(-3.0, 3.5, -0.8);
+	glTranslatef(-3.0, 2.5, -0.8);
 		Priramide.paralelogramo(1.0, 0.4, 8.0, 63.435, Piedra_Gris.GLindex);
 	glPopMatrix();
 	glPushMatrix();
-		glTranslatef(-3.0, 3.5, 0.8);
+		glTranslatef(-3.0, 2.5, 0.8);
 		Priramide.paralelogramo(1.0, 0.4, 8.0, 63.435, Piedra_Gris.GLindex);
 	glPopMatrix();
 	glPushMatrix();
-		glTranslatef(-5.1, -0.3, 0.0);
+		glTranslatef(-5.1, -1.3, 0.0);
 		for (size_t i = 0; i < 20; i++)
 		{
 			fig6.prisma(0.4, 0.20, 1.5, Piedra_Gris.GLindex);
@@ -814,11 +835,11 @@ void Piramide_Sacrificios ( void )
 		}
 	glPopMatrix();
 	glPushMatrix();
-		glTranslatef(-0.2, 7.524, 0.0);
+		glTranslatef(-0.2, 6.524, 0.0);
 		fig6.prisma(0.05, 2.4, 2.0, Piedra_Gris.GLindex);
 	glPopMatrix();
 	glPushMatrix();
-		glTranslatef(0.0, 7.87, 0.0);
+		glTranslatef(0.0, 6.87, 0.0);
 		glScalef(1.0, 0.7, 0.5);
 		fig6.prisma2(Piedra_Gris.GLindex, Piedra_Gris.GLindex);
 	glPopMatrix();
@@ -842,17 +863,18 @@ void cadena1(void) {
 }
 
 void cadena2(void) {
-
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.1);
-	glDisable(GL_LIGHTING);
-	fig4.prisma(0.2, 0.2, 0, Cadena2.GLindex);
-	glEnable(GL_LIGHTING);
-	glRotatef(90, 0, 1, 0);
-	glDisable(GL_LIGHTING);
-	fig4.prisma(0.2, 0.2, 0, Cadena2.GLindex);
-	glEnable(GL_LIGHTING);
-	glDisable(GL_ALPHA_TEST);
+	
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.1);
+		glDisable(GL_LIGHTING);
+		fig4.prisma(0.2, 0.2, 0, Cadena2.GLindex);
+		glEnable(GL_LIGHTING);
+		glRotatef(90, 0, 1, 0);
+		glDisable(GL_LIGHTING);
+		fig4.prisma(0.2, 0.2, 0, Cadena2.GLindex);
+		glEnable(GL_LIGHTING);
+		glDisable(GL_ALPHA_TEST);
+		
 
 }
 
@@ -991,6 +1013,7 @@ void Guillotina(void) {
 	glPopMatrix();
 	glPushMatrix();
 	// Decapitado
+	glDisable(GL_COLOR_MATERIAL);
 	glTranslatef(-0.07, 0.5, 0.85);
 	glRotatef(180, 0, 0, 1);
 	glScalef(0.5, 0.5, 0.5);
@@ -1004,6 +1027,7 @@ void Guillotina(void) {
 	Cabeza_decapitada.GLrender(NULL, _SHADED, 1.0);
 	glPopMatrix();
 	glPopMatrix();
+	glEnable(GL_COLOR_MATERIAL);
 
 }
 
@@ -1054,7 +1078,6 @@ void Rueda_Tortura(void) {
 	glPopMatrix();
 
 	glPushMatrix();
-
 	// Rueda 1
 	glTranslatef(0.0, 1.86, 0.10);
 	glRotatef(90, 1, 0, 0);
@@ -1067,7 +1090,6 @@ void Rueda_Tortura(void) {
 	glTranslatef(0.0, 1.86, 0.25);
 	glRotatef(90, 1, 0, 0);
 	Muebles_Tortura.cilindro(1.36, 1.5, 50, Troncos.GLindex);
-
 	glPopMatrix();
 
 	glTranslatef(0.0, 0.0, 2.0);
@@ -1120,6 +1142,7 @@ void Rueda_Tortura(void) {
 	glTranslatef(0.0, 1.86, -0.099);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.1);
+	glRotatef(180,0,1,0);
 	Muebles_Tortura.prisma(2.84, 2.84, 0.0, RuedaMadera.GLindex);
 	glDisable(GL_ALPHA_TEST);
 
@@ -1237,17 +1260,34 @@ void Asiento_Tortura(void) {
 
 }
 
+float parte = 0,partea=0,parteb=0,partec=0.2;
 void Partidor_de_Humanos(void) {
 	// Base de intrumento de tortura
 	glPushMatrix();
 
+	glPushMatrix();
+	glDisable(GL_COLOR_MATERIAL);
+		glTranslatef(1.15, 0.4, 0);
+		glRotatef(-90,1,0,0);
+		glRotatef(90, 0, 0, 1);
+		glPushMatrix();
+			glRotatef(parteb,0,0,1);
+			Vinferior.GLrender(NULL, _SHADED, 1.0);
+		glPopMatrix();
+		glPushMatrix();
+			glRotatef(-parteb, 0, 0, 1);
+			Vsuperior.GLrender(NULL, _SHADED, 1.0);
+		glPopMatrix();
+	glPopMatrix();
+	glEnable(GL_COLOR_MATERIAL);
+	
 	//glScalef(4.0, 0.2, 1.6);
 	Muebles_Tortura.prisma(0.2, 4.0, 1.6, Madera.GLindex);
 
 	glPopMatrix();
 
 	glPushMatrix();
-	// Colunna con base derecho
+	// Columna con base derecho
 	glPushMatrix();
 
 	// Columna
@@ -1344,12 +1384,13 @@ void Partidor_de_Humanos(void) {
 
 	glPushMatrix();
 	// Cuchillas
+
+	glTranslatef(0.0, -0.8-(0.2*partea)+partec,parte);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.1);
 	Muebles_Tortura.prisma(0.3, 0.0, 2.0, Sierra.GLindex);
 	glDisable(GL_ALPHA_TEST);
 
-	glPopMatrix();
 
 	glPushMatrix();
 	// Mango
@@ -1362,6 +1403,10 @@ void Partidor_de_Humanos(void) {
 	glTranslatef(0.0, -0.2, -1.0);
 	Muebles_Tortura.cilindro(0.03, 0.4, 40, Mango_Metal_Negro.GLindex);
 	glPopMatrix();
+
+	glPopMatrix();
+
+
 
 	glPopMatrix();
 
@@ -1612,7 +1657,7 @@ void Camara_Tortura(void)
 
 	glPushMatrix();
 	// cadenas
-	glTranslatef(0.0, 2.625, 0.0);
+	glTranslatef(0.0, 3.925, 0.0);
 	for (size_t i = 0; i < 5; i++)
 	{
 
@@ -1628,7 +1673,7 @@ void Camara_Tortura(void)
 	glPushMatrix();
 	//Para que el femur conserve sus colores
 	//glDisable(GL_COLOR_MATERIAL);
-	glTranslatef(1, 1, 1);
+	glTranslatef(1, 0.1, 1);
 	glScalef(0.001, 0.001, 0.001);
 	femur.GLrender(NULL, _SHADED, 1.0);
 
@@ -1637,7 +1682,7 @@ void Camara_Tortura(void)
 	glPushMatrix();
 	//Para que el femur conserve sus colores
 	//glDisable(GL_COLOR_MATERIAL);
-	glTranslatef(1, 1, 1);
+	glTranslatef(1, 0.1, 1);
 	glRotatef(90, 0, 1, 0);
 	glScalef(0.001, 0.001, 0.001);
 	femur.GLrender(NULL, _SHADED, 1.0);
@@ -1682,6 +1727,9 @@ void Camara_Tortura(void)
 
 }
 
+///<<<<<<< HEAD
+float al = 0;
+//=======
 void Arbol_Muerto (void) {
 
 	glPushMatrix();
@@ -1850,27 +1898,10 @@ void display(void)   // Creamos la funcion donde se dibuja
 	glLoadIdentity();
 
 	glPushMatrix();
-
 	glRotatef(g_lookupdown, 1.0f, 0, 0);
-
 	gluLookAt(objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z,
 		objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
 		objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
-
-	if (ActivacionOjo)
-	{
-		glPushMatrix();
-
-		//// Modelo ojo
-			glTranslatef(objCamera.mPos.x + 0, objCamera.mPos.y + 1, objCamera.mPos.z + 4);
-			glRotatef(-30, 1, 0, 0);
-			glRotatef(-90, 0, 1, 0);
-			glRotatef(giroOjoZ + 0, 0, 0, 1);
-			fig5.esfera(1, 40, 40, Ojo.GLindex);
-
-		glPopMatrix();
-	
-	}
 
 		glPushMatrix();
 		glDisable(GL_COLOR_MATERIAL);
@@ -1878,28 +1909,30 @@ void display(void)   // Creamos la funcion donde se dibuja
 		//printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
 		glRotatef(-lrotx, 1, 0, 0);
 		glRotatef(lroty, 0, 1, 0);
-		glTranslatef(0, -1.4, -2.5);
+		glTranslatef(0, -1.2+(al/9), -2.5+al);
 		glRotatef(180, 0, 1, 0);
-		glScalef(1, aplastando, 1);
+			glScalef(1.2, aplastando*1.2, 1.2);
 		ltorso.GLrender(NULL, _SHADED, 1.0);
 		glPushMatrix();
-		glTranslatef(-0.193, +0.45, 0);
-		glRotatef(45, 0, 0, 1);
+		glTranslatef(-0.193+0.06, +0.45-0.02, 0);
+		glRotatef(60, 0, 0, 1);
+		glRotatef(lrotbd, 1, 0, 0);
 		glTranslatef(+0.193, -0.45, 0);
 		lbrazod.GLrender(NULL, _SHADED, 1.0);
 		glTranslatef(-0.5, +0.45, 0);
-		glRotatef(-45, 0, 0, 1);
+		glRotatef(30, 0, 0, 1);
 		glTranslatef(0.5, -0.45, 0);
 		lantebrazod.GLrender(NULL, _SHADED, 1.0);
 		glPopMatrix();
 
 		glPushMatrix();
 		glTranslatef(+0.15, 0.45, 0);
-		glRotatef(45, 0, 0, 1);
+		glRotatef(-60, 0, 0, 1);
+		glRotatef(lrotbi, 1, 0, 0);
 		glTranslatef(-0.15, -0.45, 0);
 		lbrazoi.GLrender(NULL, _SHADED, 1.0);
 		glTranslatef(+0.43, +0.40, 0);
-		glRotatef(+45, 0, 0, 1);
+		glRotatef(-30, 0, 0, 1);
 		glTranslatef(-0.45, -0.41, 0);
 		lantebrazoi.GLrender(NULL, _SHADED, 1.0);
 		glPopMatrix();
@@ -1907,32 +1940,47 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 		glPushMatrix();
 		glTranslatef(0, 0.1, 0);
-		glRotatef(-40, 1, 0, 0);
+		glRotatef(lrotpd, 1, 0, 0);
 		glTranslatef(0, -0.1, 0);
 		lpiernad.GLrender(NULL, _SHADED, 1.0);
 		glTranslatef(0, -0.4, 0);
-		glRotatef(-40, 1, 0, 0);
+		glRotatef(lrotapd, 1, 0, 0);
 		glTranslatef(0, 0.4, 0);
 		lantepiernad.GLrender(NULL, _SHADED, 1.0);
 
 		glPopMatrix();
 			glPushMatrix();
 			glTranslatef(0, +0.1, 0);
-			glRotatef(30, 1, 0, 0);
+			glRotatef(lrotpi, 1, 0, 0);
 			glTranslatef(0, -0.1, 0);
 			lpiernai.GLrender(NULL, _SHADED, 1.0);
 			glTranslatef(0, -0.4, 0);
-			glRotatef(60, 1, 0, 0);
-			glTranslatef(0, 0.5, 0);
+			glRotatef(lrotapi, 1, 0, 0);
+			glTranslatef(0, 0.4, 0);
 			lantepiernai.GLrender(NULL, _SHADED, 1.0);
 		glPopMatrix();
 			glEnable(GL_COLOR_MATERIAL);
 		glPopMatrix();
+
+		if (ActivacionOjo)
+		{
+			glPushMatrix();
+
+			//// Modelo ojo
+			glTranslatef(objCamera.mPos.x + 0, objCamera.mPos.y + 1, objCamera.mPos.z + 4);
+			glRotatef(-30, 1, 0, 0);
+			glRotatef(-90, 0, 1, 0);
+			glRotatef(giroOjoZ + 0, 0, 0, 1);
+			fig5.esfera(1, 40, 40, Ojo.GLindex);
+
+			glPopMatrix();
+
+		}
 	
 	//Castillo
 	glPushMatrix();
 		glPushMatrix();
-			glTranslatef(9.95, 3.5, 40.0);
+			glTranslatef(10.95, 3.5, 42.0);
 			glScalef(2, 1.8, 2);
 			glRotatef(-90,0,1,0);
 			Piramide_Sacrificios();
@@ -2200,16 +2248,162 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 			glPopMatrix();
 		
+			glPopMatrix();
+
+			glPopMatrix();
 		glPopMatrix();
 
+
 	glPopMatrix();
+
 
 	glutSwapBuffers();
 
 }
 
+bool estado1p = true;
+bool estado2p = false;
+bool estado1ap = true;
+bool estado2ap = false;
+bool estado1b = true;
+bool estado2b = false;
+bool estado1ab = true;
+bool estado2ab = false;
+const float vel = 10;
+
+void aPersonaje() {
+	if (a1 == true) {
+
+		if (estado1p) {
+			lrotpd += vel;
+			lrotpi -= vel;
+			lrotbd += vel;
+			lrotbi -= vel;
+
+				
+				if (lrotapd <= 90) {
+					lrotapd += vel;
+				}
+
+				if (lrotapi >= -5) {
+					lrotapi -= vel;
+				}
+			
+			if (lrotpd >= 45) {
+				estado2p = true;
+				estado1p = false;
+			}
+		}
+		else if (estado2p) {
+			lrotpd -= vel;
+			lrotpi += vel;
+			lrotbd -= vel;
+			lrotbi += vel;
+
+			
+			if (lrotapd >= 5) {
+				lrotapd -= vel;
+			}
+
+			if (lrotapi <= 60) {
+				lrotapi += vel;
+			}
+
+			if (lrotpd <= -60) {
+				estado2p = false;
+				estado1p = true;
+			}
+		}
+	}
+		else {
+
+			lrotapi = 0; lrotapd = 0;
+			lrotpi = 0; lrotpd = 0;
+			lrotbi = 0; lrotbd = 0;
+			lrotai = 0; lrotad = 0;
+
+		}
+
+		a1 = false;
+		t2 = clock();
+	
+}
+
+bool e1 = true;
+
+void recorre() {
+	if (e1 = true) {
+		printf("\nSe activa el recorrido\n");
+	}
+}
+
+bool estadot = false,estadoc=false, estadom = false, estadon = false;
+
+float crece=0,crecea=0,creceb=0;
 void animacion()
-{
+{  
+
+	if (objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
+		&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
+		&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5
+		&&!(objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
+		&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45)
+		&& !(objCamera.mPos.x <= 0 && objCamera.mPos.x >= 8
+			&& objCamera.mPos.z <= -46 && objCamera.mPos.z >= -58)) {
+		if (estadot == false) {
+			PlaySound(TEXT("tension.wav"), NULL, SND_ASYNC| SND_LOOP);
+			estadot = true;
+			estadon = estadom=estadoc= false;
+			al = 2.7;
+		}	
+	}
+	if (!(objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
+		&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
+		&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5)&&!Alineacion2) {
+		if (estadon == false) {
+			PlaySound(TEXT("ambiente.wav"), NULL, SND_ASYNC | SND_LOOP);
+			estadot = estadom = false;
+			estadon = true;
+			printf("Hola");
+			al = 0.0;
+			ActivacionOjo = false;
+		}
+	}
+
+
+	if (recorrido) {
+		recorre();
+	}
+
+	if (objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
+		&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45) {
+		//Animación 3
+		if (estadom == false&&estadoc==false) {
+			estadoc = true;
+			PlaySound(TEXT("Mvictima.wav"), NULL, SND_ASYNC);
+			estadom = true;
+			estadon = estadot = false;
+		}
+		if (partec >= -0.6&&estadoc) {
+			partec -= 0.005;
+			crece += 0.1;
+			crecea += 0.2;
+			parte = cos(crece);
+			partea = sqrt(pow((sin(crece)), 2));
+			if (parte <= 0.8 && parte >= -0.8) {
+				creceb++;
+				parteb = cos(creceb);
+			}
+		}
+		else {
+			estadoc = false;
+			partec = 0;
+			parteb = 0;
+			partea = 0;
+		}
+	}
+
+	aPersonaje();
 	fig3.text_izq -= 0.001;
 	fig3.text_der -= 0.001;
 	if (fig3.text_izq<-1)
@@ -2223,7 +2417,7 @@ void animacion()
 		//movKit +=1.0;
 
 		if (ActivacionCuchilla) {
-
+		
 			if (movCuchilla <= -1.75) {
 
 				ActivacionCuchilla = false;
@@ -2266,7 +2460,7 @@ void animacion()
 
 	}
 
-	//Movimiento del monito
+	//Movimiento de la guillotina
 	if (play)
 	{
 
@@ -2300,10 +2494,13 @@ void animacion()
 
 	}
 
-	//Movimiento del ojo
+	//Animación del ojo
 	if (play_1)
 	{
-
+		if (estadom == false) {
+			PlaySound(TEXT("risa_macabra.wav"), NULL, SND_ASYNC);
+			estadom = true;
+		}
 		if (i_curr_steps_1 >= i_max_steps_1) //end of animation between frames?
 		{
 			playIndex_1++;
@@ -2315,6 +2512,7 @@ void animacion()
 				animacionOjo = false;
 				PrimeraActivacion = false;
 				printf("Activado");
+				estadot = false;
 			}
 			else //Next frame interpolations
 			{
@@ -2495,16 +2693,19 @@ void animacion()
 		}
 		else  if (contador <= 225)
 		{
+			
 			g_lookupdown -= 1.0f;
+			if (g_lookupdown <= -90){
+				al = 0.0;
+			}
 		}
 		else if (contador <= 270)
 		{
 			if (!Alineacion3) {
 
-				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | SND_LOOP);
-				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | NULL);
+				
 				Alineacion3 = true;
-
+				
 			}
 				
 		}
@@ -2515,20 +2716,23 @@ void animacion()
 		else if (contador <= 520)
 		{
 			aplastando -= 0.01;
+			if (!Alineacion4) {
+				printf("Has sido sacrificado\n");
+				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | NULL);
+				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | SND_NOSTOP);
+				Alineacion4 = true;
+			
+			}
 		}
 		else if (contador <= 600)
 		{
-			if (!Alineacion4) {
-
-				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | SND_LOOP);
-				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | NULL);
-				Alineacion4 = true;
-
-			}
+			
 		}
 		else
 		{
-
+				PlaySound(TEXT("ambiente.wav"), NULL, SND_ASYNC | SND_LOOP | SND_NOSTOP);
+				Alineacion2 = false;
+				Alineacion1 = false;
 			aplastando = 1.0;
 
 		}
@@ -2536,6 +2740,7 @@ void animacion()
 
 		contador++;
 	}
+
 
 	//
 //printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
@@ -2565,24 +2770,43 @@ void reshape(int width, int height)   // Creamos funcion Reshape
 	glLoadIdentity();
 }
 
+
+
 void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 {
 	switch (key) {
+	case 13:
+		recorrido = true;
+		
+		printf("Haz presionado la tecla correcta\n");
+		break;
 
 	case 'q':   //Movimientos de camara
 	case 'Q':
-		Alineacion1 = true;
-		contador = 0;
+		if (objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
+			&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
+			&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5
+			&& !(objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
+				&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45)
+			) {
+			Alineacion1 = true;
+			PlaySound(TEXT("cuartos.wav"), NULL, SND_ASYNC | SND_LOOP);
+			contador = 0;
+		}
 		break;
 
 	case 'w':   //Movimientos de camara
 	case 'W':
 		objCamera.Move_Camera(CAMERASPEED + 0.2);
+		printf("(%f %f %f)\n",objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+		a1 = true;
 		break;
 
 	case 's':
 	case 'S':
 		objCamera.Move_Camera(-(CAMERASPEED + 0.2));
+	
+		a1 = true;
 		break;
 
 	case 'a':
@@ -2597,7 +2821,10 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 
 
 	case ' ':		//Poner algo en movimiento
-		g_fanimacion ^= true; //Activamos/desactivamos la animacíon
+		if ((g_fanimacion ^= true)){
+			PlaySound(TEXT("Dvictima.wav"), NULL, SND_ASYNC);
+			//Activamos/desactivamos la animacíon
+		}
 		break;
 
 	//case 'k':		//
@@ -2702,6 +2929,7 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 		movEsqueletoY -= 0.5;
 		break;
 
+
 	//case 'z':
 	//	movCabezaX += 0.05;
 	//	break;
@@ -2747,6 +2975,8 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas especiales (arrow keys)
 {
 	switch (a_keys) {
+
+	
 	case GLUT_KEY_PAGE_UP:
 		objCamera.UpDown_Camera(CAMERASPEED);
 		break;
@@ -2783,6 +3013,7 @@ void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas espe
 
 int main(int argc, char** argv)   // Main Function
 {
+	
 	glutInit(&argc, argv); // Inicializamos OpenGL
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); // Display Mode (Clores RGB y alpha | Buffer Doble )
 	glutInitWindowSize(500, 500);	// Tama�o de la Ventana
