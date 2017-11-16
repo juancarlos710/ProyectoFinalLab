@@ -69,6 +69,11 @@ CTexture Pasto;
 CTexture Ladrillos;
 CTexture Frente;
 
+
+CTexture Arbol;
+CTexture Arbol_1;
+
+
 CFiguras Torre;
 CTexture T_Piramide;
 
@@ -128,6 +133,9 @@ float movKit = 0.0;
 float movCuchilla = 0.0;
 
 float aplastando = 1.0;
+float OjoX = 0.0;
+float OjoY = 0.0;
+float OjoZ = 0.0;
 
 //float movCabezaX = 0.0, movCabezay = 0.0, girarCabeza = 0.0;
 
@@ -143,6 +151,8 @@ bool Alineacion3 = false;
 bool Alineacion4 = false;
 bool Alineacion5 = false;
 bool Alineacion6 = false;
+
+bool ActivacionOjo = false;
 
 //NEW// Keyframes
 //Variables de dibujo y manipulacion
@@ -707,7 +717,13 @@ void InitGL(GLvoid)     // Inicializamos parametros
 		Ojo.BuildGLTexture();
 		Ojo.ReleaseImage();
 
+		Arbol.LoadTGA("Arbol.tga");
+		Arbol.BuildGLTexture();
+		Arbol.ReleaseImage();
 
+		Arbol_1.LoadTGA("Arbol_1.tga");
+		Arbol_1.BuildGLTexture();
+		Arbol_1.ReleaseImage();
 
 		//Carga de Figuras
 		femur._3dsLoad("FEMUR.3ds");
@@ -1468,6 +1484,7 @@ void Cuarto_Siniestro(void)
 	//glDisable(GL_COLOR_MATERIAL);
 	//glScalef(0.1, 0.1, 0.1);
 	//Craneo.GLrender(NULL, _SHADED, 1.0);
+	glTranslatef(OjoX, OjoY, OjoZ);
 	fig5.esfera(1, 40, 40, Ojo.GLindex);
 
 	glPopMatrix();
@@ -1665,6 +1682,165 @@ void Camara_Tortura(void)
 
 }
 
+void Arbol_Muerto (void) {
+
+	glPushMatrix();
+		
+		glPushMatrix();
+
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(60, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(120, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(180, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(240, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(300, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+
+	glPopMatrix();
+
+}
+
+void Arbol_Muerto_1 (void) {
+
+	glPushMatrix();
+		
+		glPushMatrix();
+
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_1.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(60, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_1.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(120, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_1.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(180, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_1.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(240, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_1.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(300, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_1.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+
+	glPopMatrix();
+
+}
 
 void display(void)   // Creamos la funcion donde se dibuja
 {
@@ -1680,6 +1856,21 @@ void display(void)   // Creamos la funcion donde se dibuja
 	gluLookAt(objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z,
 		objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
 		objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
+
+	if (ActivacionOjo)
+	{
+		glPushMatrix();
+
+		//// Modelo ojo
+			glTranslatef(objCamera.mPos.x + 0, objCamera.mPos.y + 1, objCamera.mPos.z + 4);
+			glRotatef(-30, 1, 0, 0);
+			glRotatef(-90, 0, 1, 0);
+			glRotatef(giroOjoZ + 0, 0, 0, 1);
+			fig5.esfera(1, 40, 40, Ojo.GLindex);
+
+		glPopMatrix();
+	
+	}
 
 		glPushMatrix();
 		glDisable(GL_COLOR_MATERIAL);
@@ -1969,10 +2160,49 @@ void display(void)   // Creamos la funcion donde se dibuja
 			Cuarto_Siniestro();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			glPopMatrix();
+
+/**********************************************Arboles*************************************************************/
+
+			glPushMatrix();
+
+				glTranslatef(-30, 5, -30);
+				Arbol_Muerto();
+
+			glPopMatrix();
+			glPushMatrix();
+
+			glTranslatef(30, 5, -30);
+			Arbol_Muerto();
+
+			glPopMatrix();
+			glPushMatrix();
+
+			glTranslatef(-30, 5, 30);
+			Arbol_Muerto();
+			glPushMatrix();
+
+				glTranslatef(0, 0, -30);
+				Arbol_Muerto_1();
+
+			glPopMatrix();
+
+			glPopMatrix();
+			glPushMatrix();
+
+			glTranslatef(30, 5, 30);
+			Arbol_Muerto();
+			glPushMatrix();
+
+				glTranslatef(0, 0, -30);
+				Arbol_Muerto_1();
+
+			glPopMatrix();
+
+			glPopMatrix();
 		
 		glPopMatrix();
-	glPopMatrix();
 
+	glPopMatrix();
 
 	glutSwapBuffers();
 
@@ -2166,7 +2396,12 @@ void animacion()
 	if (Alineacion1) {
 
 		objCamera.Position_Camera(6.29432, 5.7, -36.2024, 6.47898, 5.7, -33.2081, 0, 1, 0);
+		/*OjoX = objCamera.mPos.x - 2;
+		OjoY = objCamera.mPos.y - 2;
+		OjoZ = objCamera.mPos.z - 2;*/
+
 		lroty = -176;
+		ActivacionOjo = true;
 		Alineacion1 = false;
 		Alineacion2 = true;
 
