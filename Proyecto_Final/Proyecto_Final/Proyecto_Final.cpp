@@ -86,7 +86,8 @@ CTexture Frente;
 
 CTexture Arbol;
 CTexture Arbol_1;
-
+CTexture Arbol_2;
+CTexture Arbol_3;
 
 CFiguras Torre;
 CTexture T_Piramide;
@@ -138,11 +139,13 @@ CTexture Ojo;
 
 CModel Craneo;
 CModel Esqueleto;
+CModel Mucielago;
 
 CModel Cabeza_decapitada;
 CModel Cuerpo_decapitado;
 
 int contador = 0;
+int contador_1 = 0;
 
 //Animación del coche
 float movKit = 0.0;
@@ -167,6 +170,15 @@ bool Alineacion3 = false;
 bool Alineacion4 = false;
 bool Alineacion5 = false;
 bool Alineacion6 = false;
+
+bool A1 = false;
+bool A2 = false;
+bool A3 = false;
+bool A4 = false;
+bool A5 = false;
+bool A6 = false;
+bool A7 = false;
+bool A8 = false;
 
 bool ActivacionOjo = false;
 
@@ -742,10 +754,19 @@ void InitGL(GLvoid)     // Inicializamos parametros
 		Arbol_1.BuildGLTexture();
 		Arbol_1.ReleaseImage();
 
+		Arbol_2.LoadTGA("Arbol_2.tga");
+		Arbol_2.BuildGLTexture();
+		Arbol_2.ReleaseImage();
+
+		Arbol_3.LoadTGA("Arbol_3.tga");
+		Arbol_3.BuildGLTexture();
+		Arbol_3.ReleaseImage();
+
 		//Carga de Figuras
 		femur._3dsLoad("FEMUR.3ds");
 		Craneo._3dsLoad("skull.3ds");
 		Esqueleto._3dsLoad("skeleton.3DS");
+		Mucielago._3dsLoad("VAMP_BAT.3DS");
 
 		Cabeza_decapitada._3dsLoad("Vcabeza.3DS");
 		Cuerpo_decapitado._3dsLoad("Vcuerpo.3DS");
@@ -1890,6 +1911,166 @@ void Arbol_Muerto_1 (void) {
 
 }
 
+void Arbol_Muerto_2 (void) {
+
+	glPushMatrix();
+		
+		glPushMatrix();
+
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_2.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(60, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_2.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(120, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_2.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(180, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_2.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(240, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_2.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(300, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_2.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+
+	glPopMatrix();
+
+}
+
+void Arbol_Muerto_3 (void) {
+
+	glPushMatrix();
+		
+		glPushMatrix();
+
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_3.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(60, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_3.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(120, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_3.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(180, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_3.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(240, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_3.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+		glPushMatrix();
+
+			glRotatef(300, 0, 1, 0);
+			glScalef(11, 10, 0);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, 0.1);
+			glDisable(GL_LIGHTING);
+			fig6.prisma3(Transparente.GLindex, Transparente.GLindex, Arbol_3.GLindex, Transparente.GLindex, Transparente.GLindex, Transparente.GLindex);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_ALPHA_TEST);
+
+		glPopMatrix();
+
+	glPopMatrix();
+
+}
+
 void display(void)   // Creamos la funcion donde se dibuja
 {
 	int i,j;
@@ -1979,11 +2160,62 @@ void display(void)   // Creamos la funcion donde se dibuja
 	
 	//Castillo
 	glPushMatrix();
+
 		glPushMatrix();
 			glTranslatef(10.95, 3.5, 42.0);
 			glScalef(2, 1.8, 2);
 			glRotatef(-90,0,1,0);
 			Piramide_Sacrificios();
+		glPopMatrix();
+
+		glPushMatrix();
+
+			glTranslatef(10.95, 3.5, 42.0);
+			glPushMatrix();
+			glPopMatrix();
+			glPushMatrix();
+
+				glTranslatef(-30, 13.5, 0.0);
+				glScalef(3, 3, 3);
+				Arbol_Muerto_3();
+
+			glPopMatrix();
+			glPushMatrix();
+
+				glTranslatef(30, 13.5, 0.0);
+				glScalef(3,3,3);
+				Arbol_Muerto_3();
+
+			glPopMatrix();
+			glPushMatrix();
+
+				glTranslatef(-30, 13.5, -30);
+				glScalef(3, 3, 3);
+				Arbol_Muerto_3();
+
+			glPopMatrix();
+			glPushMatrix();
+
+				glTranslatef(-30, 13.5, 30);
+				glScalef(3, 3, 3);
+				Arbol_Muerto_3();
+
+			glPopMatrix();
+			glPushMatrix();
+
+				glTranslatef(30, 13.5, -30);
+				glScalef(3, 3, 3);
+				Arbol_Muerto_3();
+
+			glPopMatrix();
+			glPushMatrix();
+
+				glTranslatef(30, 13.5, 30);
+				glScalef(3, 3, 3);
+				Arbol_Muerto_3();
+
+			glPopMatrix();
+
 		glPopMatrix();
 
 			glTranslatef(10.0, 2.5, -40.0);
@@ -2185,7 +2417,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPopMatrix();
 
 
-			glPushMatrix();
+		glPushMatrix();
 		
 			glPushMatrix(); //Mn
 				glDisable(GL_LIGHTING);
@@ -2197,15 +2429,15 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glPopMatrix();
 
 			//Para que el comando glColor funcione con iluminacion
-			glTranslatef(0, 0, -2.1);
-			glEnable(GL_COLOR_MATERIAL);
+				glTranslatef(0, 0, -2.1);
+				glEnable(GL_COLOR_MATERIAL);
 ///////////////////////////////////////Camara de Tortura/////////////////////////////////////////////////////////////
-			Camara_Tortura();
+				Camara_Tortura();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			glTranslatef(0,0,-10.05);
-			glRotatef(-90,0,1,0);
+				glTranslatef(0,0,-10.05);
+				glRotatef(-90,0,1,0);
 ////////////////////////////////////////Cuarto Siniestro////////////////////////////////////////////////////////////
-			Cuarto_Siniestro();
+				Cuarto_Siniestro();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			glPopMatrix();
 
@@ -2237,20 +2469,143 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glPopMatrix();
 			glPushMatrix();
 
-			glTranslatef(30, 5, 30);
-			Arbol_Muerto();
-			glPushMatrix();
+				glTranslatef(30, 5, 30);
+				Arbol_Muerto();
+				glPushMatrix();
 
-				glTranslatef(0, 0, -30);
-				Arbol_Muerto_1();
+					glTranslatef(0, 0, -30);
+					Arbol_Muerto_1();
+
+				glPopMatrix();
+				glPushMatrix();
+
+					glTranslatef(0, 15, -80);
+					glPushMatrix();
+						glScalef(4,4,4);
+						Arbol_Muerto_2();
+					glPopMatrix();
+					glPushMatrix();
+
+						glTranslatef(10, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+					glPushMatrix();
+
+						glTranslatef(20, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+					glPushMatrix();
+
+						glTranslatef(30, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+
+					glPushMatrix();
+
+						glTranslatef(-10, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+					glPushMatrix();
+
+						glTranslatef(-20, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+					glPushMatrix();
+
+						glTranslatef(-30, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+					glPushMatrix();
+
+						glTranslatef(-40, 0, 0);
+						glScalef(4, 4, 4);
+						Arbol_Muerto_2();
+
+					glPopMatrix();
+
+				glPopMatrix();
+
+				glPushMatrix();
+
+					glTranslatef(-80, 23, -15);
+					glScalef(6,6,6);
+					Arbol_Muerto_3();
+
+				glPopMatrix();
+				glPushMatrix();
+
+					glTranslatef(40, 23, -15);
+					glScalef(6, 6, 6);
+					Arbol_Muerto_3();
+
+				glPopMatrix();
 
 			glPopMatrix();
+			// Murcielagos ___________________________________________________________________________________________________
+			glPushMatrix();
+
+				//Para que el femur conserve sus colores
+				glDisable(GL_COLOR_MATERIAL);
+				glTranslatef(0, 100, 0);
+				glScalef(200, 200, 200);
+				Mucielago.GLrender(NULL, _SHADED, 1.0);
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+				//Para que el femur conserve sus colores
+				glDisable(GL_COLOR_MATERIAL);
+				glTranslatef(-40, 30, -40);
+				glScalef(200, 200, 200);
+				Mucielago.GLrender(NULL, _SHADED, 1.0);
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+				//Para que el femur conserve sus colores
+				glDisable(GL_COLOR_MATERIAL);
+				glTranslatef(-20, 20, 40);
+				glScalef(200, 200, 200);
+				Mucielago.GLrender(NULL, _SHADED, 1.0);
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+				//Para que el femur conserve sus colores
+				glDisable(GL_COLOR_MATERIAL);
+				glTranslatef(40, 60, -10);
+				glScalef(200, 200, 200);
+				Mucielago.GLrender(NULL, _SHADED, 1.0);
 
 			glPopMatrix();
 		
+			glPushMatrix();
+
+				//Para que el femur conserve sus colores
+				glDisable(GL_COLOR_MATERIAL);
+				glTranslatef(40, 50, 20);
+				glScalef(200, 200, 200);
+				Mucielago.GLrender(NULL, _SHADED, 1.0);
+
 			glPopMatrix();
 
 			glPopMatrix();
+
 		glPopMatrix();
 
 
@@ -2333,7 +2688,190 @@ bool e1 = true;
 
 void recorre() {
 	if (e1 = true) {
-		printf("\nSe activa el recorrido\n");
+		if (A1 && A2 && A3 && A4 && A5 && A6) {
+
+			if (contador_1 <= 20)
+			{
+				objCamera.Move_Camera(CAMERASPEED + 0.2);
+				play_1 = false;
+			}
+			else  if (contador_1 <= 28)
+			{
+				objCamera.Rotate_View(CAMERASPEED);
+				lroty -= 4.0;
+			}
+			else  if (contador_1 <= 70)
+			{
+				g_lookupdown += 1.0f;
+			}
+			else  if (contador_1 <= 180)
+			{
+
+			}
+			else  if (contador_1 <= 222)
+			{
+				objCamera.Rotate_View(-CAMERASPEED);
+				lroty += 4.0f;
+			}
+			else  if (contador_1 <= 420)
+			{
+				if (!A7)
+				{
+					if ((g_fanimacion ^= true)) {
+						PlaySound(TEXT("Dvictima.wav"), NULL, SND_ASYNC);
+						A7 = true;
+						//Activamos/desactivamos la animacíon
+					}
+				}
+			}
+			else  if (contador_1 <= 462)
+			{
+				g_lookupdown -= 1.0f;
+			}
+			else  if (contador_1 <= 472)
+			{
+				objCamera.Rotate_View(-CAMERASPEED);
+				lroty += 4.0f;
+			}
+			else  if (contador_1 <= 480)
+			{
+				objCamera.Move_Camera(CAMERASPEED + 0.2);
+			}
+			else  if (contador_1 <= 500)
+			{
+				objCamera.Rotate_View(CAMERASPEED);
+				lroty -= 4.0;
+			}
+			else  if (contador_1 <= 508)
+			{
+				objCamera.Move_Camera(CAMERASPEED + 0.2);
+			}
+			else  if (contador_1 <= 530)
+			{
+				objCamera.Rotate_View(CAMERASPEED);
+				lroty -= 4.0;
+			}
+			else  if (contador_1 <= 553)
+			{
+				objCamera.Move_Camera(CAMERASPEED + 0.2);
+			}
+			else  if (contador_1 <= 579)
+			{
+				objCamera.Rotate_View(CAMERASPEED);
+				lroty -= 4.0;
+			}
+			else  if (contador_1 <= 587)
+			{
+				objCamera.Move_Camera(CAMERASPEED + 0.2);
+			}
+			else  if (contador_1 <= 607)
+			{
+				g_lookupdown += 1.0f;
+			}
+			else  if (contador_1 <= 611)
+			{
+				objCamera.Rotate_View(-CAMERASPEED);
+				lroty += 4.0f;
+			}
+			else  if (contador_1 <= 1020)
+			{
+
+			}
+			else
+			{
+				recorrido = false;
+				if (objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
+					&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
+					&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5
+					&& !(objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
+						&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45)
+					) {
+					Alineacion1 = true;
+					PlaySound(TEXT("cuartos.wav"), NULL, SND_ASYNC | SND_LOOP);
+					contador = 0;
+				}
+			}
+
+
+
+			printf("\nSe activa el recorrido\n");
+			contador_1++;
+
+		}
+		else
+		{
+
+			play_1 = false;
+
+			if (objCamera.mPos.x <= 9) {
+				objCamera.Strafe_Camera(CAMERASPEED + 0.4);
+				A1 = false;
+			}
+			else
+			{
+				A1 = true;
+			}
+
+			if (objCamera.mPos.x >= 11) {
+				objCamera.Strafe_Camera(-(CAMERASPEED + 0.4));
+				A2 = false;
+			}
+			else
+			{
+				A2 = true;
+			}
+
+			if (objCamera.mPos.z >= -24) {
+				objCamera.Move_Camera(CAMERASPEED + 0.2);
+				A3 = false;
+			}
+			else
+			{
+				A3 = true;
+			}
+
+			if (objCamera.mPos.z <= -26) {
+				objCamera.Move_Camera(-(CAMERASPEED + 0.2));
+				A4 = false;
+			}
+			else
+			{
+				A4 = true;
+			}
+
+			if (objCamera.mPos.y <= 5) {
+				objCamera.UpDown_Camera(CAMERASPEED);
+				A5 = false;
+			}
+			else
+			{
+				A5 = true;
+			}
+
+			if (objCamera.mPos.y >= 6) {
+				objCamera.UpDown_Camera(-CAMERASPEED);
+				A6 = false;
+			}
+			else
+			{
+				A6 = true;
+			}
+
+			if (objCamera.mView.x <= objCamera.mPos.x) {
+
+				objCamera.Rotate_View(CAMERASPEED);
+				lroty -= 4.0;
+
+			}
+
+			if (objCamera.mView.x >= objCamera.mPos.x) {
+
+				objCamera.Rotate_View(-CAMERASPEED);
+				lroty += 4.0f;
+
+			}
+
+		}
 	}
 }
 
@@ -2594,10 +3132,6 @@ void animacion()
 	if (Alineacion1) {
 
 		objCamera.Position_Camera(6.29432, 5.7, -36.2024, 6.47898, 5.7, -33.2081, 0, 1, 0);
-		/*OjoX = objCamera.mPos.x - 2;
-		OjoY = objCamera.mPos.y - 2;
-		OjoZ = objCamera.mPos.z - 2;*/
-
 		lroty = -176;
 		ActivacionOjo = true;
 		Alineacion1 = false;
