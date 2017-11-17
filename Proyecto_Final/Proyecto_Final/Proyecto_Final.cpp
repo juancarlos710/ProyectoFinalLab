@@ -1926,7 +1926,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 		glPopMatrix();
 
 		glPushMatrix();
-		glTranslatef(+0.15, 0.45, 0);
+		glTranslatef(+0.15, 0.45, 0.01);
 		glRotatef(-60, 0, 0, 1);
 		glRotatef(lrotbi, 1, 0, 0);
 		glTranslatef(-0.15, -0.45, 0);
