@@ -2345,7 +2345,7 @@ void animacion()
 
 	if (objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
 		&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
-		&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5
+		&& objCamera.mPos.x <= 28 && objCamera.mPos.x >= -8.5
 		&&!(objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
 		&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45)
 		&& !(objCamera.mPos.x <= 0 && objCamera.mPos.x >= 8
@@ -2359,7 +2359,7 @@ void animacion()
 	}
 	if (!(objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
 		&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
-		&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5)&&!Alineacion2) {
+		&& objCamera.mPos.x <= 28 && objCamera.mPos.x >= -8.5)&&!Alineacion2) {
 		if (estadon == false) {
 			PlaySound(TEXT("ambiente.wav"), NULL, SND_ASYNC | SND_LOOP);
 			estadot = estadom = false;
@@ -2695,7 +2695,7 @@ void animacion()
 		{
 			
 			g_lookupdown -= 1.0f;
-			if (g_lookupdown <= -90){
+			if (contador >= 180) {
 				al = 0.0;
 			}
 		}
@@ -2707,11 +2707,12 @@ void animacion()
 				Alineacion3 = true;
 				
 			}
-				
+		
 		}
 		else if (contador <= 420)
 		{
 			g_lookupdown += 1.0f;
+			
 		}
 		else if (contador <= 520)
 		{
@@ -2733,6 +2734,10 @@ void animacion()
 				PlaySound(TEXT("ambiente.wav"), NULL, SND_ASYNC | SND_LOOP | SND_NOSTOP);
 				Alineacion2 = false;
 				Alineacion1 = false;
+				Alineacion3 = false;
+				Alineacion4 = false;
+				Alineacion5 = false;
+				Alineacion6 = false;
 			aplastando = 1.0;
 
 		}
@@ -2774,199 +2779,202 @@ void reshape(int width, int height)   // Creamos funcion Reshape
 
 void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 {
-	switch (key) {
-	case 13:
-		recorrido = true;
-		
-		printf("Haz presionado la tecla correcta\n");
-		break;
+	if (!(Alineacion1 | Alineacion2 | Alineacion3
+		| Alineacion4 | Alineacion5 | Alineacion6)) {
+		switch (key) {
+		case 13:
+			recorrido = true;
 
-	case 'q':   //Movimientos de camara
-	case 'Q':
-		if (objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
-			&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
-			&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5
-			&& !(objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
-				&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45)
-			) {
-			Alineacion1 = true;
-			PlaySound(TEXT("cuartos.wav"), NULL, SND_ASYNC | SND_LOOP);
-			contador = 0;
+			printf("Haz presionado la tecla correcta\n");
+			break;
+
+		case 'q':   //Movimientos de camara
+		case 'Q':
+			if (objCamera.mPos.z <= -20 && objCamera.mPos.z >= -58
+				&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0
+				&& objCamera.mPos.x <= 26 && objCamera.mPos.x >= -6.5
+				&& !(objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
+					&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45)
+				) {
+				Alineacion1 = true;
+				PlaySound(TEXT("cuartos.wav"), NULL, SND_ASYNC | SND_LOOP);
+				contador = 0;
+			}
+			break;
+
+		case 'w':   //Movimientos de camara
+		case 'W':
+			objCamera.Move_Camera(CAMERASPEED + 0.2);
+			printf("(%f %f %f)\n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+			a1 = true;
+			break;
+
+		case 's':
+		case 'S':
+			objCamera.Move_Camera(-(CAMERASPEED + 0.2));
+
+			a1 = true;
+			break;
+
+		case 'a':
+		case 'A':
+			objCamera.Strafe_Camera(-(CAMERASPEED + 0.4));
+			break;
+
+		case 'd':
+		case 'D':
+			objCamera.Strafe_Camera(CAMERASPEED + 0.4);
+			break;
+
+
+		case ' ':		//Poner algo en movimiento
+			if ((g_fanimacion ^= true)) {
+				PlaySound(TEXT("Dvictima.wav"), NULL, SND_ASYNC);
+				//Activamos/desactivamos la animacíon
+			}
+			break;
+
+			//case 'k':		//
+			//case 'K':
+			//	if (FrameIndex<MAX_FRAMES)
+			//	{
+			//		saveFrame();
+			//	}
+
+			//	break;
+
+		case 'l':
+		case 'L':
+			//if (play == false && (FrameIndex>1))
+			//{
+
+			//	resetElements();
+			//	//First Interpolation				
+			//	interpolation();
+
+			//	play = true;
+			//	playIndex = 0;
+			//	i_curr_steps = 0;
+			//}
+			//else
+			//{
+			//	play = false;
+			//}
+
+
+			//if (play_1 == false && (FrameIndex_1>1))
+			//{
+
+			//	resetElementsOjo();
+			//	//First Interpolation				
+			//	interpolationOjo();
+
+			//	play_1 = true;
+			//	playIndex_1 = 0;
+			//	i_curr_steps_1 = 0;
+			//}
+			//else
+			//{
+			//	play_1 = false;
+			//}
+
+			break;
+
+		case 'z':
+			giroOjoX += 0.5;
+			break;
+
+		case 'Z':
+			giroOjoX -= 0.5;
+			break;
+
+		case 'x':
+			giroOjoY += 0.5;
+			break;
+
+		case 'X':
+			giroOjoY -= 0.5;
+			break;
+
+		case 'c':
+			giroOjoZ += 0.5;
+			break;
+
+		case 'C':
+			giroOjoZ -= 0.5;
+			break;
+
+		case 'v':
+			rotEsqueletoY += 2;
+			break;
+
+		case 'V':
+			rotEsqueletoY -= 2;
+			break;
+
+		case 'b':
+			EscalamientoEsqueleto += 0.001;
+			break;
+
+		case 'B':
+			EscalamientoEsqueleto -= 0.001;
+			break;
+
+		case 'n':
+			movEsqueletoX += 0.5;
+			break;
+
+		case 'N':
+			movEsqueletoX -= 0.5;
+			break;
+
+		case 'm':
+			movEsqueletoY += 0.5;
+			break;
+
+		case 'M':
+			movEsqueletoY -= 0.5;
+			break;
+
+
+			//case 'z':
+			//	movCabezaX += 0.05;
+			//	break;
+
+			//case 'Z':
+			//	movCabezaX -= 0.05;
+			//	break;
+
+			//case 'x':
+			//	movCabezay += 0.05;
+			//	break;
+
+			//case 'X':
+			//	movCabezay -= 0.05;
+			//	break;
+
+			//case 'c':
+			//	girarCabezaX += 0.1;
+			//	break;
+
+			//case 'C':
+			//	girarCabezaX -= 0.1;
+			//	break;
+
+			//case 'v':
+			//	girarCabezaY += 0.1;
+			//	break;
+
+			//case 'V':
+			//	girarCabezaY -= 0.1;
+			//	break;
+
+		case 27:        // Cuando Esc es presionado...
+			exit(0);   // Salimos del programa
+			break;
+		default:        // Cualquier otra
+			break;
 		}
-		break;
-
-	case 'w':   //Movimientos de camara
-	case 'W':
-		objCamera.Move_Camera(CAMERASPEED + 0.2);
-		printf("(%f %f %f)\n",objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
-		a1 = true;
-		break;
-
-	case 's':
-	case 'S':
-		objCamera.Move_Camera(-(CAMERASPEED + 0.2));
-	
-		a1 = true;
-		break;
-
-	case 'a':
-	case 'A':
-		objCamera.Strafe_Camera(-(CAMERASPEED + 0.4));
-		break;
-
-	case 'd':
-	case 'D':
-		objCamera.Strafe_Camera(CAMERASPEED + 0.4);
-		break;
-
-
-	case ' ':		//Poner algo en movimiento
-		if ((g_fanimacion ^= true)){
-			PlaySound(TEXT("Dvictima.wav"), NULL, SND_ASYNC);
-			//Activamos/desactivamos la animacíon
-		}
-		break;
-
-	//case 'k':		//
-	//case 'K':
-	//	if (FrameIndex<MAX_FRAMES)
-	//	{
-	//		saveFrame();
-	//	}
-
-	//	break;
-
-	case 'l':
-	case 'L':
-		//if (play == false && (FrameIndex>1))
-		//{
-
-		//	resetElements();
-		//	//First Interpolation				
-		//	interpolation();
-
-		//	play = true;
-		//	playIndex = 0;
-		//	i_curr_steps = 0;
-		//}
-		//else
-		//{
-		//	play = false;
-		//}
-
-
-		//if (play_1 == false && (FrameIndex_1>1))
-		//{
-
-		//	resetElementsOjo();
-		//	//First Interpolation				
-		//	interpolationOjo();
-
-		//	play_1 = true;
-		//	playIndex_1 = 0;
-		//	i_curr_steps_1 = 0;
-		//}
-		//else
-		//{
-		//	play_1 = false;
-		//}
-
-		break;
-
-	case 'z':
-		giroOjoX += 0.5;
-		break;
-
-	case 'Z':
-		giroOjoX -= 0.5;
-		break;
-
-	case 'x':
-		giroOjoY += 0.5;
-		break;
-
-	case 'X':
-		giroOjoY -= 0.5;
-		break;
-
-	case 'c':
-		giroOjoZ += 0.5;
-		break;
-
-	case 'C':
-		giroOjoZ -= 0.5;
-		break;
-
-	case 'v':
-		rotEsqueletoY += 2;
-		break;
-
-	case 'V':
-		rotEsqueletoY -= 2;
-		break;
-
-	case 'b':
-		EscalamientoEsqueleto += 0.001;
-		break;
-
-	case 'B':
-		EscalamientoEsqueleto -= 0.001;
-		break;
-
-	case 'n':
-		movEsqueletoX += 0.5;
-		break;
-
-	case 'N':
-		movEsqueletoX -= 0.5;
-		break;
-
-	case 'm':
-		movEsqueletoY += 0.5;
-		break;
-
-	case 'M':
-		movEsqueletoY -= 0.5;
-		break;
-
-
-	//case 'z':
-	//	movCabezaX += 0.05;
-	//	break;
-
-	//case 'Z':
-	//	movCabezaX -= 0.05;
-	//	break;
-
-	//case 'x':
-	//	movCabezay += 0.05;
-	//	break;
-
-	//case 'X':
-	//	movCabezay -= 0.05;
-	//	break;
-
-	//case 'c':
-	//	girarCabezaX += 0.1;
-	//	break;
-
-	//case 'C':
-	//	girarCabezaX -= 0.1;
-	//	break;
-
-	//case 'v':
-	//	girarCabezaY += 0.1;
-	//	break;
-
-	//case 'V':
-	//	girarCabezaY -= 0.1;
-	//	break;
-
-	case 27:        // Cuando Esc es presionado...
-		exit(0);   // Salimos del programa
-		break;
-	default:        // Cualquier otra
-		break;
 	}
 
 	glutPostRedisplay();
@@ -2974,38 +2982,41 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 
 void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas especiales (arrow keys)
 {
-	switch (a_keys) {
+	if (!(Alineacion1 | Alineacion2 | Alineacion3
+		| Alineacion4 | Alineacion5 | Alineacion6)) {
+		switch (a_keys) {
 
-	
-	case GLUT_KEY_PAGE_UP:
-		objCamera.UpDown_Camera(CAMERASPEED);
-		break;
 
-	case GLUT_KEY_PAGE_DOWN:
-		objCamera.UpDown_Camera(-CAMERASPEED);
-		//printf("%g", CAMERASPEED);
-		break;
+		case GLUT_KEY_PAGE_UP:
+			objCamera.UpDown_Camera(CAMERASPEED);
+			break;
 
-	case GLUT_KEY_UP:     // Presionamos tecla ARRIBA...
-		g_lookupdown -= 1.0f;
-		break;
+		case GLUT_KEY_PAGE_DOWN:
+			objCamera.UpDown_Camera(-CAMERASPEED);
+			//printf("%g", CAMERASPEED);
+			break;
 
-	case GLUT_KEY_DOWN:               // Presionamos tecla ABAJO...
-		g_lookupdown += 1.0f;
-		break;
+		case GLUT_KEY_UP:     // Presionamos tecla ARRIBA...
+			g_lookupdown -= 1.0f;
+			break;
 
-	case GLUT_KEY_LEFT:
-		objCamera.Rotate_View(-CAMERASPEED);
-		lroty +=4.0f;
-		break;
+		case GLUT_KEY_DOWN:               // Presionamos tecla ABAJO...
+			g_lookupdown += 1.0f;
+			break;
 
-	case GLUT_KEY_RIGHT:
-		objCamera.Rotate_View(CAMERASPEED);
-		lroty -= 4.0;
-		break;
+		case GLUT_KEY_LEFT:
+			objCamera.Rotate_View(-CAMERASPEED);
+			lroty += 4.0f;
+			break;
 
-	default:
-		break;
+		case GLUT_KEY_RIGHT:
+			objCamera.Rotate_View(CAMERASPEED);
+			lroty -= 4.0;
+			break;
+
+		default:
+			break;
+		}
 	}
 	glutPostRedisplay();
 }
