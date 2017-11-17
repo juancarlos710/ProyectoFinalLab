@@ -3291,10 +3291,10 @@ void animacion()
 
 
 	//
-printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
-		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
-		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
-		printf("monito x = %g", lroty);
+//printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+//		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
+//		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
+//		printf("monito x = %g", lroty);
 	glutPostRedisplay();
 }
 
