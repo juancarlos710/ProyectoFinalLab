@@ -2690,6 +2690,14 @@ void recorre() {
 	if (e1 = true) {
 		if (A1 && A2 && A3 && A4 && A5 && A6) {
 
+			if (contador_1 == 0)
+			{
+
+				objCamera.Position_Camera(10, 5.7, -24.26, 10, 5.7, -27.26, 0, 1, 0);
+				lroty = 0.0;
+
+			}
+
 			if (contador_1 <= 20)
 			{
 				objCamera.Move_Camera(CAMERASPEED + 0.2);
@@ -2773,7 +2781,7 @@ void recorre() {
 				objCamera.Rotate_View(-CAMERASPEED);
 				lroty += 4.0f;
 			}
-			else  if (contador_1 <= 1020)
+			else  if (contador_1 <= 1030)
 			{
 
 			}
@@ -3133,6 +3141,7 @@ void animacion()
 
 		objCamera.Position_Camera(6.29432, 5.7, -36.2024, 6.47898, 5.7, -33.2081, 0, 1, 0);
 		lroty = -176;
+		g_lookupdown = 0.0f;
 		ActivacionOjo = true;
 		Alineacion1 = false;
 		Alineacion2 = true;
@@ -3282,10 +3291,10 @@ void animacion()
 
 
 	//
-//printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
-//		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
-//		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
-//		printf("monito x = %g", lroty);
+printf("pos: x = %g, y = %g, z = %g \n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
+		printf("pos rot: x = %g, y = %g, z = %g \n", objCamera.mView.x, objCamera.mView.y, objCamera.mView.z);
+		printf("pos up: x = %g, y = %g, z = %g \n", objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
+		printf("monito x = %g", lroty);
 	glutPostRedisplay();
 }
 
@@ -3314,7 +3323,7 @@ void reshape(int width, int height)   // Creamos funcion Reshape
 void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 {
 	if (!(Alineacion1 | Alineacion2 | Alineacion3
-		| Alineacion4 | Alineacion5 | Alineacion6)) {
+		| Alineacion4 | Alineacion5 | Alineacion6) && (!recorrido)) {
 		switch (key) {
 		case 13:
 			recorrido = true;
@@ -3517,7 +3526,7 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 void arrow_keys(int a_keys, int x, int y)  // Funcion para manejo de teclas especiales (arrow keys)
 {
 	if (!(Alineacion1 | Alineacion2 | Alineacion3
-		| Alineacion4 | Alineacion5 | Alineacion6)) {
+		| Alineacion4 | Alineacion5 | Alineacion6) && (!recorrido)) {
 		switch (a_keys) {
 
 
