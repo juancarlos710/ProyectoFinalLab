@@ -2578,7 +2578,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 
 				//Para que el femur conserve sus colores
 				glDisable(GL_COLOR_MATERIAL);
-				glTranslatef(-20, 20, 40);
+				glTranslatef(-20, 40, 40);
 				glScalef(200, 200, 200);
 				Mucielago.GLrender(NULL, _SHADED, 1.0);
 
@@ -2680,7 +2680,6 @@ void aPersonaje() {
 		}
 
 		a1 = false;
-		t2 = clock();
 	
 }
 
@@ -2688,6 +2687,7 @@ bool e1 = true;
 
 void recorre() {
 	if (e1 = true) {
+		
 		if (A1 && A2 && A3 && A4 && A5 && A6) {
 
 			if (contador_1 == 0)
@@ -2696,12 +2696,12 @@ void recorre() {
 				objCamera.Position_Camera(10, 5.7, -24.26, 10, 5.7, -27.26, 0, 1, 0);
 				lroty = 0.0;
 				g_lookupdown = 0.0f;
-
 			}
 
 			if (contador_1 <= 20)
 			{
 				objCamera.Move_Camera(CAMERASPEED + 0.2);
+
 				play_1 = false;
 			}
 			else  if (contador_1 <= 28)
@@ -2803,13 +2803,12 @@ void recorre() {
 
 
 
-			printf("\nSe activa el recorrido\n");
 			contador_1++;
 
 		}
 		else
 		{
-
+			a1 = true;
 			play_1 = false;
 
 			if (objCamera.mPos.x <= 9) {
@@ -2832,6 +2831,7 @@ void recorre() {
 
 			if (objCamera.mPos.z >= -24) {
 				objCamera.Move_Camera(CAMERASPEED + 0.2);
+
 				A3 = false;
 			}
 			else
@@ -2882,6 +2882,7 @@ void recorre() {
 
 		}
 	}
+	
 }
 
 bool estadot = false,estadoc=false, estadom = false, estadon = false;
@@ -2911,7 +2912,6 @@ void animacion()
 			PlaySound(TEXT("ambiente.wav"), NULL, SND_ASYNC | SND_LOOP);
 			estadot = estadom = false;
 			estadon = true;
-			printf("Hola");
 			al = 0.0;
 			ActivacionOjo = false;
 		}
@@ -2923,7 +2923,8 @@ void animacion()
 	}
 
 	if (objCamera.mPos.x <= 14.5 && objCamera.mPos.x >= 8
-		&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45) {
+		&& objCamera.mPos.z <= -40 && objCamera.mPos.z >= -45
+		&& objCamera.mPos.y <= 16 && objCamera.mPos.y >= 0) {
 		//Animación 3
 		if (estadom == false&&estadoc==false) {
 			estadoc = true;
@@ -2951,6 +2952,7 @@ void animacion()
 	}
 
 	aPersonaje();
+
 	fig3.text_izq -= 0.001;
 	fig3.text_der -= 0.001;
 	if (fig3.text_izq<-1)
@@ -3085,7 +3087,8 @@ void animacion()
 
 	}
 
-	if (objCamera.mPos.x >= 6 && objCamera.mPos.x <= 13 && objCamera.mPos.z <= -48 && objCamera.mPos.z >= -53.5 && !animacionOjo)
+	if (objCamera.mPos.x >= 6 && objCamera.mPos.x <= 13 && objCamera.mPos.z <= -48 && objCamera.mPos.z >= -53.5 && !animacionOjo
+		&& objCamera.mPos.y <= 6.5 && objCamera.mPos.y >= 0)
 	{
 		
 		animacionOjo = true;
@@ -3262,7 +3265,7 @@ void animacion()
 		{
 			aplastando -= 0.01;
 			if (!Alineacion4) {
-				printf("Has sido sacrificado\n");
+				printf("\n\nHas sido sacrificado\n");
 				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | NULL);
 				PlaySound(TEXT("Grito_Hombre_T.wav"), NULL, SND_ASYNC | SND_NOSTOP);
 				Alineacion4 = true;
@@ -3329,7 +3332,7 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 		case 13:
 			recorrido = true;
 
-			printf("Haz presionado la tecla correcta\n");
+			printf("\nComienza recorrido guidado\n");
 			break;
 
 		case 'q':   //Movimientos de camara
@@ -3349,7 +3352,6 @@ void keyboard(unsigned char key, int x, int y)  // Create Keyboard Function
 		case 'w':   //Movimientos de camara
 		case 'W':
 			objCamera.Move_Camera(CAMERASPEED + 0.2);
-			printf("(%f %f %f)\n", objCamera.mPos.x, objCamera.mPos.y, objCamera.mPos.z);
 			a1 = true;
 			break;
 
