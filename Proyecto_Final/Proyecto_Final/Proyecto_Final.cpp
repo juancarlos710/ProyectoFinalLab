@@ -144,7 +144,7 @@ CModel Mucielago;
 CModel Cabeza_decapitada;
 CModel Cuerpo_decapitado;
 
-int contador = 0;
+int contador =  0;
 int contador_1 = 0;
 
 //Animación del coche
@@ -2151,7 +2151,7 @@ void display(void)   // Creamos la funcion donde se dibuja
 			glTranslatef(objCamera.mPos.x + 0, objCamera.mPos.y + 1, objCamera.mPos.z + 4);
 			glRotatef(-30, 1, 0, 0);
 			glRotatef(-90, 0, 1, 0);
-			glRotatef(giroOjoZ + 0, 0, 0, 1);
+			//glRotatef(giroOjoZ + 0, 0, 0, 1);
 			fig5.esfera(1, 40, 40, Ojo.GLindex);
 
 			glPopMatrix();
@@ -2695,6 +2695,7 @@ void recorre() {
 
 				objCamera.Position_Camera(10, 5.7, -24.26, 10, 5.7, -27.26, 0, 1, 0);
 				lroty = 0.0;
+				g_lookupdown = 0.0f;
 
 			}
 
